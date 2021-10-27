@@ -39,9 +39,9 @@ internal class PlayerPersistenceServiceInMemoryImplTest {
             mutableSetOf()
         )
 
+        `when`(players.get(playerId)).thenReturn(newPlayer)
         val player = playerPersistenceServiceInMemoryImpl.savePlayer(newPlayer)
 
-        verify(players.put(playerId, player), times(1))
         assertEquals(player, newPlayer)
 
     }
@@ -57,11 +57,11 @@ internal class PlayerPersistenceServiceInMemoryImplTest {
             mutableSetOf()
         )
 
+        `when`(players.containsKey(playerId)).thenReturn(true)
         `when`(players.get(playerId)).thenReturn(savedPlayer)
 
         val game = playerPersistenceServiceInMemoryImpl.findPlayerById(playerId)
 
-        verify(players.get(playerId), times(1))
         assertEquals(game, savedPlayer)
 
     }

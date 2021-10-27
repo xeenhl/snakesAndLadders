@@ -2,18 +2,19 @@ package com.snakesandladders.game.persistence
 
 import com.snakesandladders.game.models.Game
 import com.snakesandladders.game.models.GameStatus
-import org.junit.jupiter.api.Test
-
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
+import org.mockito.MockitoAnnotations
 import org.mockito.junit.jupiter.MockitoExtension
-import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import java.util.*
+
 
 @ExtendWith(MockitoExtension::class)
 internal class GamePersistenceServiceInMemoryImplTest {
@@ -34,9 +35,10 @@ internal class GamePersistenceServiceInMemoryImplTest {
             null
         )
 
+        `when`(games.get(gameId)).thenReturn(game)
+
         val savedGame = gamePersistenceServiceInMemoryImpl.saveGame(game)
 
-        verify(games.put(gameId, game), times(1))
         assertEquals(game, savedGame)
     }
 
@@ -52,11 +54,11 @@ internal class GamePersistenceServiceInMemoryImplTest {
             null
         )
 
+        `when`(games.containsKey(gameId)).thenReturn(true)
         `when`(games.get(gameId)).thenReturn(savedGame)
 
         val game = gamePersistenceServiceInMemoryImpl.findGameById(gameId)
 
-        verify(games.get(gameId), times(1))
         assertEquals(game, savedGame)
 
     }
@@ -80,12 +82,11 @@ internal class GamePersistenceServiceInMemoryImplTest {
             null
         )
 
-        `when`(games.get(gameId)).thenReturn(savedGame)
+        `when`(games.containsKey(gameId)).thenReturn(true)
+        `when`(games.get(gameId)).thenReturn(updateGame)
 
-        val game = gamePersistenceServiceInMemoryImpl.findGameById(gameId)
+        val game = gamePersistenceServiceInMemoryImpl.updateGame(updateGame)
 
-        verify(games.get(gameId), times(1))
-        verify(games.put(gameId, updateGame), times(1))
         assertEquals(game, updateGame)
     }
 }
