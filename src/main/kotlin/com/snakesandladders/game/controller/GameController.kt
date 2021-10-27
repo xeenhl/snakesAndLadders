@@ -19,7 +19,7 @@ class GameController(private val gameService: GameService,
                      private val diceService: DiceService) {
 
 
-    @GetMapping("/new/")
+    @GetMapping("/create/new")
     fun createNewGame(): ResponseEntity<Game> {
         val game = gameService.initializeNewGame()
         return  ResponseEntity.ok(game)
