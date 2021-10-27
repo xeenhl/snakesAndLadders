@@ -5,6 +5,6 @@ import java.util.*
 
 interface PlayerPersistenceService {
     fun savePlayer(newPlayer: Player): Player
-    fun findPlayerById(playerId: UUID): Player
+    fun findPlayerById(playerId: UUID): Player?
 
 }

@@ -6,6 +6,6 @@ import kotlin.random.Random
 @Service
 class DiceServiceImpl : DiceService {
     override fun roll(): Int {
-        TODO("Not yet implemented")
+        return Random.nextInt(0, 7)
     }
 }

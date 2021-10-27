@@ -11,6 +11,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.any
 import java.util.*
 
 @ExtendWith(MockitoExtension::class)
@@ -29,7 +30,7 @@ internal class PlayerServiceImplTest {
 
         val newPlayer = Player(UUID.randomUUID(), NAME, mutableSetOf())
 
-        `when`(playerPersistenceService.savePlayer(newPlayer)).thenReturn(newPlayer)
+        `when`(playerPersistenceService.savePlayer(any())).thenReturn(newPlayer)
 
         val player = playerServiceImpl.createUser(NAME)
 

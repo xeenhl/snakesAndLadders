@@ -24,6 +24,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.cloud:spring-cloud-contract-wiremock:3.0.4")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:4.0.0")
+
 
 
 }

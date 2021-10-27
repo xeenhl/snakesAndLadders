@@ -1,23 +1,40 @@
 package com.snakesandladders.game.services
 
-import com.snakesandladders.game.models.Game
-import com.snakesandladders.game.models.Player
+import com.snakesandladders.game.exception.GameNotFoundException
+import com.snakesandladders.game.models.*
+import com.snakesandladders.game.persistence.GamePersistenceService
+import org.springframework.stereotype.Service
 import java.util.*
 
-class GameServiceImpl : GameService {
+@Service
+class GameServiceImpl(private val gamePersistenceService: GamePersistenceService) : GameService {
+
     override fun initializeNewGame(): Game {
-        TODO("Not yet implemented")
+        val newGame = Game(
+            UUID.randomUUID(),
+            mutableSetOf(),
+            GameStatus.RUNNING,
+            null
+        )
+        return gamePersistenceService.saveGame(newGame)
     }
 
     override fun getGameById(gameId: UUID): Game {
-        TODO("Not yet implemented")
+        return gamePersistenceService.findGameById(gameId) ?: throw GameNotFoundException("User with id [$gameId] not found")
     }
 
     override fun addPlayerToGame(player: Player, game: Game): Game {
-        TODO("Not yet implemented")
+        game.players.add(
+            PlayerInGame(
+                player,
+                0,
+                0
+            )
+        )
+        return gamePersistenceService.updateGame(game)
     }
 
-    override fun updateGame(game: Game) {
-        TODO("Not yet implemented")
+    override fun updateGame(game: Game): Game {
+        return gamePersistenceService.updateGame(game)
     }
 }
