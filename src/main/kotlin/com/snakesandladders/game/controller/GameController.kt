@@ -5,6 +5,7 @@ import com.snakesandladders.game.models.PlayerDiceRoll
 import com.snakesandladders.game.services.DiceService
 import com.snakesandladders.game.services.GameService
 import com.snakesandladders.game.services.PlayerService
+import jdk.jfr.ContentType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -19,7 +20,7 @@ class GameController(private val gameService: GameService,
                      private val diceService: DiceService) {
 
 
-    @GetMapping("/create/new")
+    @GetMapping(path = ["/create/new"], produces = ["application/json"] )
     fun createNewGame(): ResponseEntity<Game> {
         val game = gameService.initializeNewGame()
         return  ResponseEntity.ok(game)
@@ -31,7 +32,7 @@ class GameController(private val gameService: GameService,
         return  ResponseEntity.ok(game)
     }
 
-    @GetMapping("/{gameId}/add/palyer/{playerId}")
+    @GetMapping("/{gameId}/add/player/{playerId}")
     fun addPlayerToGame(@PathVariable(required = true) playerId: String,
                         @PathVariable(required = true) gameId: String): ResponseEntity<Game> {
         val game = gameService.getGameById(UUID.fromString(gameId))

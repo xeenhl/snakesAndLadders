@@ -1,9 +1,15 @@
 package com.snakesandladders.game.integration
 
+import com.snakesandladders.game.models.Game
+import com.snakesandladders.game.models.GameStatus
+import com.snakesandladders.game.models.Player
+import com.snakesandladders.game.models.PlayerInGame
 import com.snakesandladders.game.persistence.GamePersistenceServiceInMemoryImpl
 import com.snakesandladders.game.persistence.GamePersistenceServiceInMemoryImplTest
 import com.snakesandladders.game.persistence.PlayerPersistenceServiceInMemoryImpl
 import org.junit.jupiter.api.Test
+import org.mockito.Mockito.`when`
+import org.mockito.kotlin.any
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
@@ -11,6 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import java.util.*
 
 
 @AutoConfigureMockMvc
@@ -26,9 +33,20 @@ class GameEndpointTest() {
     @MockBean
     lateinit var gamePersistenceServiceInMemoryImpl: GamePersistenceServiceInMemoryImpl
 
+    private val NAME = "Name"
+
 
     @Test
     fun `should create new game`() {
+
+        val game = Game(
+            UUID.randomUUID(),
+            mutableSetOf(),
+            GameStatus.RUNNING,
+            null
+        )
+
+        `when`(gamePersistenceServiceInMemoryImpl.saveGame(any())).thenReturn(game)
 
         mockMvc.get("/game/create/new")
             .andExpect {
@@ -36,10 +54,10 @@ class GameEndpointTest() {
                 content { contentType(MediaType.APPLICATION_JSON) }
                 content { json(""" 
                     {
-                        "id": "new-game-id",
+                        "id": "${game.id}",
                         "players": [],
-                        "status": "running",
-                        "winner": ""
+                        "status": "${game.status}",
+                        "winner": ${game.winner} 
                     }
                 """)}}
     }
@@ -47,16 +65,25 @@ class GameEndpointTest() {
     @Test
     fun `should return existing game by id`() {
 
-        mockMvc.get("/game/existing-game-id")
+        val game = Game(
+            UUID.randomUUID(),
+            mutableSetOf(),
+            GameStatus.RUNNING,
+            null
+        )
+
+        `when`(gamePersistenceServiceInMemoryImpl.findGameById(any())).thenReturn(game)
+
+        mockMvc.get("/game/${game.id}")
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
                 content { json("""
                     {
-                        "id": "existing-game-id",
+                        "id": "${game.id}",
                         "players": [],
-                        "status": "running",
-                        "winner": ""
+                        "status": "${game.status}",
+                        "winner": ${game.winner} 
                     }
                 """)}
             }
@@ -80,20 +107,46 @@ class GameEndpointTest() {
     @Test
     fun `should add existing player to existing game by ids`() {
 
-        mockMvc.get("/game/existing-game-id/add/player/existing-player-id")
+        val game = Game(
+            UUID.randomUUID(),
+            mutableSetOf(),
+            GameStatus.RUNNING,
+            null
+        )
+
+        val player = Player(
+            UUID.randomUUID(),
+            NAME,
+            mutableSetOf()
+        )
+
+        val updateGame = Game(
+            UUID.randomUUID(),
+            mutableSetOf(PlayerInGame(
+                player, 0 ,0
+            )),
+            GameStatus.RUNNING,
+            null
+        )
+
+        `when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
+        `when`(gamePersistenceServiceInMemoryImpl.updateGame(any())).thenReturn(updateGame)
+        `when`(playerPersistenceServiceInMemoryImpl.findPlayerById(player.id)).thenReturn(player)
+
+        mockMvc.get("/game/${game.id}/add/player/${player.id}")
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
                 content { json("""
                     {
-                        "id": "existing-game-id",
+                        "id": "${game.id}",
                         "players": [
                             {
-                            "id": "existing-player-id",
-                            "position": 0
+                            "id": "${player.id}",
+                            "position": 0,
                             }],
-                        "status": "running",
-                        "winner": ""
+                        "status": "${game.status}",
+                        "winner": ${game.winner}
                     }
                 """)}
             }
