@@ -68,13 +68,6 @@ internal class GamePersistenceServiceInMemoryImplTest {
 
         val gameId = UUID.randomUUID()
 
-        val savedGame = Game(
-            gameId,
-            mutableSetOf(),
-            GameStatus.RUNNING,
-            null
-        )
-
         val updateGame = Game(
             gameId,
             mutableSetOf(),

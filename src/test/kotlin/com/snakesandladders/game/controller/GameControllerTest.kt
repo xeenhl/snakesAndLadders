@@ -7,7 +7,6 @@ import com.snakesandladders.game.models.PlayerInGame
 import com.snakesandladders.game.services.DiceService
 import com.snakesandladders.game.services.GameService
 import com.snakesandladders.game.services.PlayerService
-import org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.any
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -16,6 +15,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
+import org.mockito.kotlin.any
 import java.util.*
 
 @ExtendWith(MockitoExtension::class)
@@ -99,11 +99,13 @@ internal class GameControllerTest {
         val playerId = UUID.randomUUID()
         val player = Player(playerId, "Name", mutableSetOf())
         val game = Game(gameId, mutableSetOf(PlayerInGame(player, 2, 0)), GameStatus.RUNNING, null)
+        val updatedGame = Game(gameId, mutableSetOf(PlayerInGame(player, 2, 2)), GameStatus.RUNNING, null)
 
         `when`(gameService.getGameById(gameId)).thenReturn(game)
+        `when`(gameService.updateGame(any())).thenReturn(updatedGame)
 
-        val updatedGame = gameController.movePlayerInGame(playerId.toString(), gameId.toString(), 2)
+        val result = gameController.movePlayerInGame(playerId.toString(), gameId.toString(), 2)
 
-        assertEquals(updatedGame.body?.players?.first { it.player == player }?.position, 2)
+        assertEquals(result.body?.players?.first { it.player == player }?.position, 2)
     }
 }

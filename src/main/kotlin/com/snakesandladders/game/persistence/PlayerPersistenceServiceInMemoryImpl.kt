@@ -1,5 +1,6 @@
 package com.snakesandladders.game.persistence
 
+import com.snakesandladders.game.exception.PlayerNotFoundException
 import com.snakesandladders.game.models.Game
 import com.snakesandladders.game.models.Player
 import org.springframework.stereotype.Service
@@ -14,6 +15,6 @@ class PlayerPersistenceServiceInMemoryImpl( private val players: MutableMap<UUID
     }
 
     override fun findPlayerById(playerId: UUID): Player? {
-        return if(players.containsKey(playerId)) players.get(playerId) else throw IllegalArgumentException(" Can't get player with id [${playerId}]")
+        return if(players.containsKey(playerId)) players.get(playerId) else throw PlayerNotFoundException("Can't get player with id [${playerId}]")
     }
 }

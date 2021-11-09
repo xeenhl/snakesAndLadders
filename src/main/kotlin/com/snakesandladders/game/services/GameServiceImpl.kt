@@ -20,7 +20,7 @@ class GameServiceImpl(private val gamePersistenceService: GamePersistenceService
     }
 
     override fun getGameById(gameId: UUID): Game {
-        return gamePersistenceService.findGameById(gameId) ?: throw GameNotFoundException("User with id [$gameId] not found")
+        return gamePersistenceService.findGameById(gameId) ?: throw GameNotFoundException("Game with id [$gameId] not found")
     }
 
     override fun addPlayerToGame(player: Player, game: Game): Game {
@@ -28,7 +28,7 @@ class GameServiceImpl(private val gamePersistenceService: GamePersistenceService
             PlayerInGame(
                 player,
                 0,
-                0
+                1
             )
         )
         return gamePersistenceService.updateGame(game)
@@ -36,5 +36,13 @@ class GameServiceImpl(private val gamePersistenceService: GamePersistenceService
 
     override fun updateGame(game: Game): Game {
         return gamePersistenceService.updateGame(game)
+    }
+
+    override fun validateWinner(game: Game) {
+        val player = game.players.firstOrNull { it.position >= 100 }
+        if(player != null) {
+            game.winner = player.player
+            game.status = GameStatus.FINISHED
+        }
     }
 }

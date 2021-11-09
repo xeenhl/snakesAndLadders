@@ -1,11 +1,11 @@
 package com.snakesandladders.game.controller
 
+import com.snakesandladders.game.exception.PlayerNotFoundException
 import com.snakesandladders.game.models.Game
 import com.snakesandladders.game.models.PlayerDiceRoll
 import com.snakesandladders.game.services.DiceService
 import com.snakesandladders.game.services.GameService
 import com.snakesandladders.game.services.PlayerService
-import jdk.jfr.ContentType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -46,7 +46,7 @@ class GameController(private val gameService: GameService,
         val rollResult = diceService.roll()
         val game = gameService.getGameById(UUID.fromString(gameId))
         val player = userService.getPlayerById(UUID.fromString(playerId))
-        game.players.first { it.player == player }.lastDice = rollResult
+        game.players.firstOrNull() { it.player == player }?.lastDice = rollResult
         gameService.updateGame(game)
 
         return  ResponseEntity.ok(PlayerDiceRoll(player.id, rollResult))
@@ -57,9 +57,11 @@ class GameController(private val gameService: GameService,
                          @PathVariable(required = true) gameId: String,
                          @PathVariable(required = true) steps: Int): ResponseEntity<Game> {
         val game = gameService.getGameById(UUID.fromString(gameId))
-        val player = game.players.first { it.player.id == UUID.fromString(playerId) }
+        val player = game.players.firstOrNull { it.player.id == UUID.fromString(playerId) } ?: throw PlayerNotFoundException("Can't get player with id [${playerId}]")
         if(steps == player.lastDice) player.position += steps else throw IllegalArgumentException(" Steps must be same as las dice result: ${player.lastDice}")
-        return  ResponseEntity.ok(game)
+        if(player.position > 100) player.position -= steps
+        gameService.validateWinner(game)
+        return  ResponseEntity.ok(gameService.updateGame(game))
     }
 
 }

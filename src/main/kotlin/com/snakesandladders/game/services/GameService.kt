@@ -9,5 +9,6 @@ interface GameService {
     fun getGameById(gameId: UUID): Game
     fun addPlayerToGame(player: Player, game: Game): Game
     fun updateGame(game: Game): Game
+    fun validateWinner(game: Game)
 
 }
