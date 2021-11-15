@@ -1,7 +1,6 @@
 package com.snakesandladders.game.persistence
 
 import com.snakesandladders.game.exception.PlayerNotFoundException
-import com.snakesandladders.game.models.Game
 import com.snakesandladders.game.models.Player
 import org.springframework.stereotype.Service
 import java.util.*

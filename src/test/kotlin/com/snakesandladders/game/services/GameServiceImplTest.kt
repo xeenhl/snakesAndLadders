@@ -73,4 +73,26 @@ internal class GameServiceImplTest {
 
         assertEquals(game, updatedGame)
     }
+
+    @Test
+    fun evalStep() {
+        val player = Player(UUID.randomUUID(), NAME, mutableSetOf())
+        val game = Game(UUID.randomUUID(), mutableSetOf(PlayerInGame(player, 4, 0)), GameStatus.RUNNING, null)
+        val evaluatedGame = Game(game.id, mutableSetOf(PlayerInGame(player, 4, 4)), GameStatus.RUNNING, null)
+//        `when`(gamePersistenceService.updateGame(updatedGame)).thenReturn(updatedGame)
+
+        gameServiceImpl.evalStep(game, player.id, 4)
+
+        assertEquals(game.players.elementAt(0).position, 4)
+    }
+
+    @Test
+    fun updatePlayerDiceRoll() {
+        val player = Player(UUID.randomUUID(), NAME, mutableSetOf())
+        val game = Game(UUID.randomUUID(), mutableSetOf(PlayerInGame(player, 0, 0)), GameStatus.RUNNING, null)
+
+        gameServiceImpl.updatePlayerDiceRoll(game, player, 4)
+
+        assertEquals(game.players.elementAt(0).lastDice, 4)
+    }
 }

@@ -1,6 +1,5 @@
 package com.snakesandladders.game.models
 
-import com.fasterxml.jackson.annotation.JsonView
 import java.util.*
 
 enum class GameStatus {

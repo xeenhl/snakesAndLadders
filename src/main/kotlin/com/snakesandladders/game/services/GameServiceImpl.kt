@@ -1,7 +1,11 @@
 package com.snakesandladders.game.services
 
 import com.snakesandladders.game.exception.GameNotFoundException
-import com.snakesandladders.game.models.*
+import com.snakesandladders.game.exception.PlayerNotFoundException
+import com.snakesandladders.game.models.Game
+import com.snakesandladders.game.models.GameStatus
+import com.snakesandladders.game.models.Player
+import com.snakesandladders.game.models.PlayerInGame
 import com.snakesandladders.game.persistence.GamePersistenceService
 import org.springframework.stereotype.Service
 import java.util.*
@@ -44,5 +48,15 @@ class GameServiceImpl(private val gamePersistenceService: GamePersistenceService
             game.winner = player.player
             game.status = GameStatus.FINISHED
         }
+    }
+
+    override fun evalStep(game: Game, playerId: UUID?, steps: Int) {
+        val player = game.players.firstOrNull { it.player.id == playerId } ?: throw PlayerNotFoundException("Can't get player with id [${playerId}]")
+        if(steps == player.lastDice) player.position += steps else throw IllegalArgumentException(" Steps must be same as las dice result: ${player.lastDice}")
+        if(player.position > 100) player.position -= steps
+    }
+
+    override fun updatePlayerDiceRoll(game: Game, player: Player, rollResult: Int) {
+        game.players.firstOrNull() { it.player == player }?.lastDice = rollResult
     }
 }

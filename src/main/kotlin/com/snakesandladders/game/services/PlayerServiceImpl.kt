@@ -1,6 +1,5 @@
 package com.snakesandladders.game.services
 
-import com.snakesandladders.game.exception.GameNotFoundException
 import com.snakesandladders.game.exception.PlayerNotFoundException
 import com.snakesandladders.game.models.Player
 import com.snakesandladders.game.persistence.PlayerPersistenceService

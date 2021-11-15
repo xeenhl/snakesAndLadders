@@ -16,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.put
 import java.util.*
 
 
@@ -66,7 +67,7 @@ class TokenCanMoveAcrossTheBoardCases {
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.updateGame(updateGame)).thenReturn(updateGame)
         Mockito.`when`(playerPersistenceServiceInMemoryImpl.findPlayerById(player.id)).thenReturn(player)
 
-        mockMvc.get("/game/${game.id}/add/player/${player.id}")
+        mockMvc.put("/game/${game.id}/add/player/${player.id}")
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
@@ -129,7 +130,7 @@ class TokenCanMoveAcrossTheBoardCases {
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.updateGame(updateGame)).thenReturn(updateGame)
         Mockito.`when`(playerPersistenceServiceInMemoryImpl.findPlayerById(player.id)).thenReturn(player)
 
-        mockMvc.get("/game/${game.id}/player/${player.id}/move/3")
+        mockMvc.put("/game/${game.id}/player/${player.id}/move/3")
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
@@ -216,8 +217,8 @@ class TokenCanMoveAcrossTheBoardCases {
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.updateGame(updateGameSecond)).thenReturn(updateGameSecond)
         Mockito.`when`(playerPersistenceServiceInMemoryImpl.findPlayerById(player.id)).thenReturn(player)
 
-        mockMvc.get("/game/${game.id}/player/${player.id}/move/3")
-        mockMvc.get("/game/${game.id}/player/${player.id}/move/4")
+        mockMvc.put("/game/${game.id}/player/${player.id}/move/3")
+        mockMvc.put("/game/${game.id}/player/${player.id}/move/4")
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }

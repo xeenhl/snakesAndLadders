@@ -23,6 +23,8 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.put
 import java.util.*
 
 
@@ -54,7 +56,7 @@ class GameEndpointTest() {
 
         `when`(gamePersistenceServiceInMemoryImpl.saveGame(any())).thenReturn(game)
 
-        mockMvc.get("/game/create/new")
+        mockMvc.post("/game/create/new")
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
@@ -141,7 +143,7 @@ class GameEndpointTest() {
         `when`(gamePersistenceServiceInMemoryImpl.updateGame(any())).thenReturn(updateGame)
         `when`(playerPersistenceServiceInMemoryImpl.findPlayerById(player.id)).thenReturn(player)
 
-        mockMvc.get("/game/${game.id}/add/player/${player.id}")
+        mockMvc.put("/game/${game.id}/add/player/${player.id}")
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
@@ -179,7 +181,7 @@ class GameEndpointTest() {
 
         `when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
 
-        mockMvc.get("/game/${game.id}/add/player/$userid")
+        mockMvc.put("/game/${game.id}/add/player/$userid")
             .andExpect {
                 status { isNotFound() }
                 content { contentType(MediaType.APPLICATION_JSON) }
@@ -204,7 +206,7 @@ class GameEndpointTest() {
 
         `when`(playerPersistenceServiceInMemoryImpl.findPlayerById(player.id)).thenReturn(player)
 
-        mockMvc.get("/game/$gameid/add/player/${player.id}")
+        mockMvc.put("/game/$gameid/add/player/${player.id}")
             .andExpect {
                 status { isNotFound() }
                 content { contentType(MediaType.APPLICATION_JSON) }
@@ -247,7 +249,7 @@ class GameEndpointTest() {
         `when`(gamePersistenceServiceInMemoryImpl.updateGame(any())).thenReturn(updateGame)
         `when`(playerPersistenceServiceInMemoryImpl.findPlayerById(player.id)).thenReturn(player)
 
-        mockMvc.get("/game/${game.id}/player/${player.id}/move/3")
+        mockMvc.put("/game/${game.id}/player/${player.id}/move/3")
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
@@ -285,7 +287,7 @@ class GameEndpointTest() {
 
         `when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
 
-        mockMvc.get("/game/${game.id}/player/$playerId/move/3")
+        mockMvc.put("/game/${game.id}/player/$playerId/move/3")
             .andExpect {
                 status { isNotFound() }
                 content { contentType(MediaType.APPLICATION_JSON) }
@@ -316,7 +318,7 @@ class GameEndpointTest() {
         `when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
         `when`(playerPersistenceServiceInMemoryImpl.findPlayerById(player.id)).thenReturn(player)
 
-        mockMvc.get("/game/${game.id}/player/${player.id}/move/3")
+        mockMvc.put("/game/${game.id}/player/${player.id}/move/3")
             .andExpect {
                 status { isNotFound() }
                 content { contentType(MediaType.APPLICATION_JSON) }

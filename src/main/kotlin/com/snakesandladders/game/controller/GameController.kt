@@ -1,16 +1,12 @@
 package com.snakesandladders.game.controller
 
-import com.snakesandladders.game.exception.PlayerNotFoundException
 import com.snakesandladders.game.models.Game
 import com.snakesandladders.game.models.PlayerDiceRoll
 import com.snakesandladders.game.services.DiceService
 import com.snakesandladders.game.services.GameService
 import com.snakesandladders.game.services.PlayerService
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
@@ -20,23 +16,22 @@ class GameController(private val gameService: GameService,
                      private val diceService: DiceService) {
 
 
-    @GetMapping(path = ["/create/new"], produces = ["application/json"] )
+    @PostMapping(path = ["/create/new"], produces = ["application/json"] )
     fun createNewGame(): ResponseEntity<Game> {
-        val game = gameService.initializeNewGame()
-        return  ResponseEntity.ok(game)
+        return  ResponseEntity.ok(gameService.initializeNewGame())
     }
 
     @GetMapping("/{gameId}")
     fun getGameById(@PathVariable(required = true) gameId: String): ResponseEntity<Game> {
-        val game = gameService.getGameById(UUID.fromString(gameId))
-        return  ResponseEntity.ok(game)
+        return  ResponseEntity.ok(gameService.getGameById(UUID.fromString(gameId)))
     }
 
-    @GetMapping("/{gameId}/add/player/{playerId}")
+    @PutMapping("/{gameId}/add/player/{playerId}")
     fun addPlayerToGame(@PathVariable(required = true) playerId: String,
                         @PathVariable(required = true) gameId: String): ResponseEntity<Game> {
         val game = gameService.getGameById(UUID.fromString(gameId))
         val player = userService.getPlayerById(UUID.fromString(playerId))
+
         return  ResponseEntity.ok(gameService.addPlayerToGame(player, game))
     }
 
@@ -46,21 +41,22 @@ class GameController(private val gameService: GameService,
         val rollResult = diceService.roll()
         val game = gameService.getGameById(UUID.fromString(gameId))
         val player = userService.getPlayerById(UUID.fromString(playerId))
-        game.players.firstOrNull() { it.player == player }?.lastDice = rollResult
+
+        gameService.updatePlayerDiceRoll(game, player, rollResult)
         gameService.updateGame(game)
 
         return  ResponseEntity.ok(PlayerDiceRoll(player.id, rollResult))
     }
 
-    @GetMapping("/{gameId}/player/{playerId}/move/{steps}")
+    @PutMapping("/{gameId}/player/{playerId}/move/{steps}")
     fun movePlayerInGame(@PathVariable(required = true) playerId: String,
                          @PathVariable(required = true) gameId: String,
                          @PathVariable(required = true) steps: Int): ResponseEntity<Game> {
         val game = gameService.getGameById(UUID.fromString(gameId))
-        val player = game.players.firstOrNull { it.player.id == UUID.fromString(playerId) } ?: throw PlayerNotFoundException("Can't get player with id [${playerId}]")
-        if(steps == player.lastDice) player.position += steps else throw IllegalArgumentException(" Steps must be same as las dice result: ${player.lastDice}")
-        if(player.position > 100) player.position -= steps
+
+        gameService.evalStep(game, UUID.fromString(playerId), steps)
         gameService.validateWinner(game)
+
         return  ResponseEntity.ok(gameService.updateGame(game))
     }
 

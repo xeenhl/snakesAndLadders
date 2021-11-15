@@ -19,6 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.put
 import java.util.*
 
 @AutoConfigureMockMvc
@@ -113,7 +114,7 @@ class MovesAreDeterminedByDiceRolls {
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.updateGame(any())).thenReturn(updateGame)
         Mockito.`when`(playerPersistenceServiceInMemoryImpl.findPlayerById(player.id)).thenReturn(player)
 
-        mockMvc.get("/game/${game.id}/player/${player.id}/move/4")
+        mockMvc.put("/game/${game.id}/player/${player.id}/move/4")
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }

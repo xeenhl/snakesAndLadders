@@ -1,6 +1,8 @@
 package com.snakesandladders.game.controller
 
-import com.snakesandladders.game.models.*
+import com.snakesandladders.game.models.NewPlayerDTO
+import com.snakesandladders.game.models.PlayerDTO
+import com.snakesandladders.game.models.toPlayerDTO
 import com.snakesandladders.game.services.PlayerService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
