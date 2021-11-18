@@ -1,5 +1,6 @@
 package com.snakesandladders.game.integration
 
+import com.snakesandladders.game.TestConstants.NAME
 import com.snakesandladders.game.models.Game
 import com.snakesandladders.game.models.GameStatus
 import com.snakesandladders.game.models.Player
@@ -17,7 +18,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.put
-import java.util.*
+import java.util.UUID
 
 
 @AutoConfigureMockMvc
@@ -42,13 +43,12 @@ class TokenCanMoveAcrossTheBoardCases {
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val player = Player(
             UUID.randomUUID(),
-            "Player",
+            NAME,
             mutableSetOf()
         )
 
@@ -59,8 +59,7 @@ class TokenCanMoveAcrossTheBoardCases {
                 player, 0 ,1
             )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
@@ -85,7 +84,7 @@ class TokenCanMoveAcrossTheBoardCases {
                                 "position": 1
                             }],
                         "status": "${game.status}",
-                        "winner": ${game.winner}
+                        "winner": null
                     }
                 """)}
             }
@@ -100,7 +99,7 @@ class TokenCanMoveAcrossTheBoardCases {
 
         val player = Player(
             UUID.randomUUID(),
-            "Player",
+            NAME,
             mutableSetOf()
         )
 
@@ -111,8 +110,7 @@ class TokenCanMoveAcrossTheBoardCases {
                     player, 3 ,1
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val updateGame = Game(
@@ -122,8 +120,7 @@ class TokenCanMoveAcrossTheBoardCases {
                     player, 3 ,4
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
@@ -148,7 +145,7 @@ class TokenCanMoveAcrossTheBoardCases {
                                 "position": 4
                             }],
                         "status": "${game.status}",
-                        "winner": ${game.winner}
+                        "winner": null
                     }
                 """)}
             }
@@ -158,13 +155,13 @@ class TokenCanMoveAcrossTheBoardCases {
 //    When the token is moved 3 spaces
 //    And then it is moved 4 spaces
 //    Then the token is on square 8
-//
+
     @Test
     fun `Given the token is on square 1 When the token is moved 3 spaces And then it is moved 4 spaces Then the token is on square 8`() {
 
         val player = Player(
             UUID.randomUUID(),
-            "Player",
+            NAME,
             mutableSetOf()
         )
 
@@ -175,8 +172,7 @@ class TokenCanMoveAcrossTheBoardCases {
                     player, 3 ,1
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val updateGameFirst = Game(
@@ -186,8 +182,7 @@ class TokenCanMoveAcrossTheBoardCases {
                     player, 3 ,4
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val updateGameFirstAfterDice = Game(
@@ -197,8 +192,7 @@ class TokenCanMoveAcrossTheBoardCases {
                     player, 4 ,4
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val updateGameSecond = Game(
@@ -208,8 +202,7 @@ class TokenCanMoveAcrossTheBoardCases {
                     player, 4 ,8
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game, updateGameFirstAfterDice)
@@ -236,7 +229,7 @@ class TokenCanMoveAcrossTheBoardCases {
                                     "position": 8
                                 }],
                             "status": "${game.status}",
-                            "winner": ${game.winner}
+                            "winner": null
                         }
                     """)}
             }

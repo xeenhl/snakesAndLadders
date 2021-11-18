@@ -1,5 +1,6 @@
 package com.snakesandladders.game.integration
 
+import com.snakesandladders.game.TestConstants.NAME
 import com.snakesandladders.game.models.Game
 import com.snakesandladders.game.models.GameStatus
 import com.snakesandladders.game.models.Player
@@ -20,7 +21,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.put
-import java.util.*
+import java.util.UUID
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -52,8 +53,7 @@ class MovesAreDeterminedByDiceRolls {
             mutableSetOf(PlayerInGame(
                 player, 0, 0
             )),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
@@ -84,7 +84,7 @@ class MovesAreDeterminedByDiceRolls {
 
         val player = Player(
             UUID.randomUUID(),
-            "Player",
+            NAME,
             mutableSetOf()
         )
 
@@ -95,8 +95,7 @@ class MovesAreDeterminedByDiceRolls {
                 player, 4, 0
             )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val updateGame = Game(
@@ -106,8 +105,7 @@ class MovesAreDeterminedByDiceRolls {
                 player, 4 ,4
             )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
@@ -132,7 +130,7 @@ class MovesAreDeterminedByDiceRolls {
                                 "position": 4
                             }],
                         "status": "${game.status}",
-                        "winner": ${game.winner}
+                        "winner": null
                     }
                 """)}
             }

@@ -1,5 +1,6 @@
 package com.snakesandladders.game.persistence
 
+import com.snakesandladders.game.TestConstants.NAME
 import com.snakesandladders.game.models.Game
 import com.snakesandladders.game.models.GameStatus
 import com.snakesandladders.game.models.Player
@@ -15,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
-import java.util.*
+import java.util.UUID
 
 @ExtendWith(MockitoExtension::class)
 internal class PlayerPersistenceServiceInMemoryImplTest {
@@ -25,8 +26,6 @@ internal class PlayerPersistenceServiceInMemoryImplTest {
 
     @InjectMocks
     lateinit var playerPersistenceServiceInMemoryImpl: PlayerPersistenceServiceInMemoryImpl
-
-    val NAME = "Name"
 
     @Test
     fun shouldSavePlayer() {

@@ -1,13 +1,14 @@
 package com.snakesandladders.game.controller
 
-import com.snakesandladders.game.models.Game
+import com.snakesandladders.game.models.GameDTO
 import com.snakesandladders.game.models.PlayerDiceRoll
+import com.snakesandladders.game.models.toGameDTO
 import com.snakesandladders.game.services.DiceService
 import com.snakesandladders.game.services.GameService
 import com.snakesandladders.game.services.PlayerService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.util.*
+import java.util.UUID
 
 @RestController
 @RequestMapping("game")
@@ -17,22 +18,22 @@ class GameController(private val gameService: GameService,
 
 
     @PostMapping(path = ["/create/new"], produces = ["application/json"] )
-    fun createNewGame(): ResponseEntity<Game> {
-        return  ResponseEntity.ok(gameService.initializeNewGame())
+    fun createNewGame(): ResponseEntity<GameDTO> {
+        return  ResponseEntity.ok(gameService.initializeNewGame().toGameDTO())
     }
 
     @GetMapping("/{gameId}")
-    fun getGameById(@PathVariable(required = true) gameId: String): ResponseEntity<Game> {
-        return  ResponseEntity.ok(gameService.getGameById(UUID.fromString(gameId)))
+    fun getGameById(@PathVariable(required = true) gameId: String): ResponseEntity<GameDTO> {
+        return  ResponseEntity.ok(gameService.getGameById(UUID.fromString(gameId)).toGameDTO())
     }
 
     @PutMapping("/{gameId}/add/player/{playerId}")
     fun addPlayerToGame(@PathVariable(required = true) playerId: String,
-                        @PathVariable(required = true) gameId: String): ResponseEntity<Game> {
+                        @PathVariable(required = true) gameId: String): ResponseEntity<GameDTO> {
         val game = gameService.getGameById(UUID.fromString(gameId))
         val player = userService.getPlayerById(UUID.fromString(playerId))
 
-        return  ResponseEntity.ok(gameService.addPlayerToGame(player, game))
+        return  ResponseEntity.ok(gameService.addPlayerToGame(player, game).toGameDTO())
     }
 
     @GetMapping("/{gameId}/player/{playerId}/dice/roll")
@@ -51,13 +52,13 @@ class GameController(private val gameService: GameService,
     @PutMapping("/{gameId}/player/{playerId}/move/{steps}")
     fun movePlayerInGame(@PathVariable(required = true) playerId: String,
                          @PathVariable(required = true) gameId: String,
-                         @PathVariable(required = true) steps: Int): ResponseEntity<Game> {
+                         @PathVariable(required = true) steps: Int): ResponseEntity<GameDTO> {
         val game = gameService.getGameById(UUID.fromString(gameId))
 
         gameService.evalStep(game, UUID.fromString(playerId), steps)
         gameService.validateWinner(game)
 
-        return  ResponseEntity.ok(gameService.updateGame(game))
+        return  ResponseEntity.ok(gameService.updateGame(game).toGameDTO())
     }
 
 }

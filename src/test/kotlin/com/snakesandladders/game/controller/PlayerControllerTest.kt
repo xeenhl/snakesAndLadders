@@ -1,5 +1,6 @@
 package com.snakesandladders.game.controller
 
+import com.snakesandladders.game.TestConstants.NAME
 import com.snakesandladders.game.models.*
 import com.snakesandladders.game.services.PlayerService
 import org.junit.jupiter.api.Test
@@ -10,7 +11,7 @@ import org.mockito.InjectMocks
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
-import java.util.*
+import java.util.UUID
 
 @ExtendWith(MockitoExtension::class)
 internal class PlayerControllerTest {
@@ -20,8 +21,6 @@ internal class PlayerControllerTest {
 
     @InjectMocks
     lateinit var playerController: PlayerController
-
-    private val NAME = "name"
 
     @Test
     fun shouldCreateNewPlayer() {

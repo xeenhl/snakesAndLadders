@@ -1,5 +1,6 @@
 package com.snakesandladders.game.integration
 
+import com.snakesandladders.game.TestConstants.NAME
 import com.snakesandladders.game.models.Player
 import com.snakesandladders.game.persistence.GamePersistenceServiceInMemoryImpl
 import com.snakesandladders.game.persistence.PlayerPersistenceServiceInMemoryImpl
@@ -14,7 +15,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
-import java.util.*
+import java.util.UUID
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -31,7 +32,7 @@ class PlayerEndpointTest {
 
         val player = Player(
             UUID.randomUUID(),
-            "Player01",
+            NAME,
             mutableSetOf()
         )
 
@@ -40,7 +41,7 @@ class PlayerEndpointTest {
         mockMvc.post("/player/new") {
             contentType = MediaType.APPLICATION_JSON
             content  = """
-                        { "name": "Player01" }
+                        { "name": "$NAME" }
                     """
         }.andExpect {
                 status { isOk() }
@@ -48,7 +49,7 @@ class PlayerEndpointTest {
                 content { json("""
                     {
                         "id": "${player.id}",
-                        "name": "Player01",
+                        "name": "$NAME",
                         "games": [],
                         "wins": 0
                     }
@@ -61,7 +62,7 @@ class PlayerEndpointTest {
 
         val player = Player(
             UUID.randomUUID(),
-            "Player01",
+            NAME,
             mutableSetOf()
         )
 
@@ -74,7 +75,7 @@ class PlayerEndpointTest {
                 content { json("""
                     {
                         "id": "${player.id}",
-                        "name": "Player01",
+                        "name": "$NAME",
                         "games": [],
                         "wins": 0
                     }

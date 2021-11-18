@@ -2,7 +2,7 @@ package com.snakesandladders.game.persistence
 
 import com.snakesandladders.game.models.Game
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.UUID
 
 @Service
 class GamePersistenceServiceInMemoryImpl(private val games: MutableMap<UUID, Game>) : GamePersistenceService {

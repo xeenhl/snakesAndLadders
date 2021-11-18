@@ -1,7 +1,7 @@
 package com.snakesandladders.game.persistence
 
 import com.snakesandladders.game.models.Game
-import java.util.*
+import java.util.UUID
 
 interface GamePersistenceService {
     fun saveGame(game: Game): Game

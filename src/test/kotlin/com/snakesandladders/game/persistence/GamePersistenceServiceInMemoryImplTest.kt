@@ -13,7 +13,7 @@ import org.mockito.MockitoAnnotations
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
-import java.util.*
+import java.util.UUID
 
 
 @ExtendWith(MockitoExtension::class)
@@ -31,8 +31,7 @@ internal class GamePersistenceServiceInMemoryImplTest {
         val game = Game(
             gameId,
             mutableSetOf(),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         `when`(games.get(gameId)).thenReturn(game)
@@ -50,8 +49,7 @@ internal class GamePersistenceServiceInMemoryImplTest {
         val savedGame = Game(
             gameId,
             mutableSetOf(),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         `when`(games.containsKey(gameId)).thenReturn(true)
@@ -71,8 +69,7 @@ internal class GamePersistenceServiceInMemoryImplTest {
         val updateGame = Game(
             gameId,
             mutableSetOf(),
-            GameStatus.FINISHED,
-            null
+            GameStatus.FINISHED
         )
 
         `when`(games.containsKey(gameId)).thenReturn(true)

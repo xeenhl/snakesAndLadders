@@ -3,7 +3,7 @@ package com.snakesandladders.game.persistence
 import com.snakesandladders.game.exception.PlayerNotFoundException
 import com.snakesandladders.game.models.Player
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.UUID
 
 @Service
 class PlayerPersistenceServiceInMemoryImpl( private val players: MutableMap<UUID, Player>) : PlayerPersistenceService {

@@ -1,5 +1,6 @@
 package com.snakesandladders.game.integration
 
+import com.snakesandladders.game.TestConstants.NAME
 import com.snakesandladders.game.models.Game
 import com.snakesandladders.game.models.GameStatus
 import com.snakesandladders.game.models.Player
@@ -25,7 +26,7 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
 import org.springframework.test.web.servlet.put
-import java.util.*
+import java.util.UUID
 
 
 @AutoConfigureMockMvc
@@ -41,8 +42,6 @@ class GameEndpointTest() {
     @MockBean
     lateinit var gamePersistenceServiceInMemoryImpl: GamePersistenceServiceInMemoryImpl
 
-    private val NAME = "Name"
-
 
     @Test
     fun `should create new game`() {
@@ -50,8 +49,7 @@ class GameEndpointTest() {
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         `when`(gamePersistenceServiceInMemoryImpl.saveGame(any())).thenReturn(game)
@@ -65,7 +63,7 @@ class GameEndpointTest() {
                         "id": "${game.id}",
                         "players": [],
                         "status": "${game.status}",
-                        "winner": ${game.winner} 
+                        "winner": null
                     }
                 """)}}
     }
@@ -76,8 +74,7 @@ class GameEndpointTest() {
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         `when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
@@ -91,7 +88,7 @@ class GameEndpointTest() {
                         "id": "${game.id}",
                         "players": [],
                         "status": "${game.status}",
-                        "winner": ${game.winner} 
+                        "winner": null 
                     }
                 """)}
             }
@@ -120,8 +117,7 @@ class GameEndpointTest() {
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val player = Player(
@@ -135,8 +131,7 @@ class GameEndpointTest() {
             mutableSetOf(PlayerInGame(
                 player, 0 ,0
             )),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         `when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
@@ -161,7 +156,7 @@ class GameEndpointTest() {
                                 "position": 0
                             }],
                         "status": "${game.status}",
-                        "winner": ${game.winner}
+                        "winner": null
                     }
                 """)}
             }
@@ -173,8 +168,7 @@ class GameEndpointTest() {
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val userid = UUID.randomUUID()
@@ -232,8 +226,7 @@ class GameEndpointTest() {
             mutableSetOf(PlayerInGame(
                 player, 3, 0
             )),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val updateGame = Game(
@@ -241,8 +234,7 @@ class GameEndpointTest() {
             mutableSetOf(PlayerInGame(
                 player, 3 ,3
             )),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         `when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
@@ -267,7 +259,7 @@ class GameEndpointTest() {
                                 "position": 3
                             }],
                         "status": "${game.status}",
-                        "winner": ${game.winner}
+                        "winner": null
                     }
                 """)}
             }
@@ -279,8 +271,7 @@ class GameEndpointTest() {
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val playerId = UUID.randomUUID()
@@ -305,8 +296,7 @@ class GameEndpointTest() {
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val player = Player(
@@ -344,8 +334,7 @@ class GameEndpointTest() {
             mutableSetOf(PlayerInGame(
                 player, 0, 0
             )),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         `when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)

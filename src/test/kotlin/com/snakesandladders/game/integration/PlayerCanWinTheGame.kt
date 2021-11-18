@@ -1,5 +1,7 @@
 package com.snakesandladders.game.integration
 
+import com.snakesandladders.game.TestConstants.NAME
+import com.snakesandladders.game.models.DefaultPlayer.DEFAULT_PLAYER
 import com.snakesandladders.game.models.Game
 import com.snakesandladders.game.models.GameStatus
 import com.snakesandladders.game.models.Player
@@ -17,7 +19,7 @@ import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.put
-import java.util.*
+import java.util.UUID
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -41,7 +43,7 @@ class PlayerCanWinTheGame {
     fun `Given the token is on square 97 When the token is moved 3 spaces Then the token is on square 100 And the player has won the game`() {
         val player = Player(
             UUID.randomUUID(),
-            "Player",
+            NAME,
             mutableSetOf()
         )
 
@@ -52,8 +54,7 @@ class PlayerCanWinTheGame {
                     player, 3, 97
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val updateGame = Game(
@@ -90,9 +91,9 @@ class PlayerCanWinTheGame {
                             }],
                         "status": "${updateGame.status}",
                         "winner": {
-                            id: "${updateGame.winner?.id}",
-                            name: "${updateGame.winner?.name}",
-                            games: ${updateGame.winner?.games}
+                            id: "${updateGame.winner.id}",
+                            name: "${updateGame.winner.name}",
+                            games: ${updateGame.winner.games}
                         }
                     }
                 """)}
@@ -119,8 +120,7 @@ class PlayerCanWinTheGame {
                     player, 4, 97
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val updateGame = Game(
@@ -130,8 +130,7 @@ class PlayerCanWinTheGame {
                     player, 4 ,97
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)

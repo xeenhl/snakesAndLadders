@@ -1,5 +1,6 @@
 package com.snakesandladders.game.services
 
+import com.snakesandladders.game.TestConstants.NAME
 import com.snakesandladders.game.models.Player
 import com.snakesandladders.game.persistence.GamePersistenceService
 import com.snakesandladders.game.persistence.PlayerPersistenceService
@@ -12,7 +13,7 @@ import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
-import java.util.*
+import java.util.UUID
 
 @ExtendWith(MockitoExtension::class)
 internal class PlayerServiceImplTest {
@@ -23,7 +24,6 @@ internal class PlayerServiceImplTest {
     @InjectMocks
     lateinit var playerServiceImpl: PlayerServiceImpl
 
-    private val NAME = "Name"
 
     @Test
     fun shouldCreateUser() {
