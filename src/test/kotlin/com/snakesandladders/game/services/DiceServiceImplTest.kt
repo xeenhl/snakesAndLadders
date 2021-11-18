@@ -1,18 +1,22 @@
 package com.snakesandladders.game.services
 
-import org.junit.jupiter.api.Assertions.*
+
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.context.SpringBootTest
 
 internal class DiceServiceImplTest {
 
     val diceServiceImpl = DiceServiceImpl()
 
+    companion object {
+        const val MIN_DICE_VALUE = 1
+        const val MAX_DICE_VALUE = 6
+    }
+
     @Test
     fun shouldGenerateRandomIntFromOneToSixOnDiceRoll() {
         val result = diceServiceImpl.roll()
-        assertTrue(result >= 1 && result <= 6)
+        assertTrue(result in MIN_DICE_VALUE..MAX_DICE_VALUE)
     }
 
 }

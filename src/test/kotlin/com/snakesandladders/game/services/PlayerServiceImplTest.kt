@@ -2,11 +2,9 @@ package com.snakesandladders.game.services
 
 import com.snakesandladders.game.TestConstants.NAME
 import com.snakesandladders.game.models.Player
-import com.snakesandladders.game.persistence.GamePersistenceService
 import com.snakesandladders.game.persistence.PlayerPersistenceService
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock

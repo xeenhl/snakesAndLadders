@@ -1,27 +1,23 @@
 package com.snakesandladders.game.integration
 
+
 import com.snakesandladders.game.TestConstants.NAME
 import com.snakesandladders.game.models.Game
 import com.snakesandladders.game.models.GameStatus
 import com.snakesandladders.game.models.Player
 import com.snakesandladders.game.models.PlayerInGame
 import com.snakesandladders.game.persistence.GamePersistenceServiceInMemoryImpl
-import com.snakesandladders.game.persistence.GamePersistenceServiceInMemoryImplTest
 import com.snakesandladders.game.persistence.PlayerPersistenceServiceInMemoryImpl
 import org.hamcrest.CoreMatchers.anyOf
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.`when`
-import org.mockito.Mockito.eq
 import org.mockito.kotlin.any
-import org.mockito.kotlin.isA
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
-import org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.post
@@ -42,6 +38,12 @@ class GameEndpointTest() {
     @MockBean
     lateinit var gamePersistenceServiceInMemoryImpl: GamePersistenceServiceInMemoryImpl
 
+    companion object {
+        const val INITIAL_DICE_ROLL = 0
+        const val INITIAL_POSITION = 0
+        const val DICE_ROLL_RESULT = 3
+        const val UPDATED_POSITION = 3
+    }
 
     @Test
     fun `should create new game`() {
@@ -129,7 +131,7 @@ class GameEndpointTest() {
         val updateGame = Game(
             game.id,
             mutableSetOf(PlayerInGame(
-                player, 0 ,0
+                player, INITIAL_DICE_ROLL, INITIAL_POSITION
             )),
             GameStatus.RUNNING
         )
@@ -152,8 +154,8 @@ class GameEndpointTest() {
                                 "name": "${player.name}",
                                 "games": []
                                 },
-                                "lastDice": 0,
-                                "position": 0
+                                "lastDice": $INITIAL_DICE_ROLL,
+                                "position": $INITIAL_POSITION
                             }],
                         "status": "${game.status}",
                         "winner": null
@@ -224,7 +226,7 @@ class GameEndpointTest() {
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(PlayerInGame(
-                player, 3, 0
+                player, DICE_ROLL_RESULT, INITIAL_POSITION
             )),
             GameStatus.RUNNING
         )
@@ -232,7 +234,7 @@ class GameEndpointTest() {
         val updateGame = Game(
             game.id,
             mutableSetOf(PlayerInGame(
-                player, 3 ,3
+                player, DICE_ROLL_RESULT, UPDATED_POSITION
             )),
             GameStatus.RUNNING
         )
@@ -255,8 +257,8 @@ class GameEndpointTest() {
                                 "name": "${player.name}",
                                 "games": []
                                 },
-                                "lastDice": 3,
-                                "position": 3
+                                "lastDice": $DICE_ROLL_RESULT,
+                                "position": $UPDATED_POSITION
                             }],
                         "status": "${game.status}",
                         "winner": null
@@ -332,7 +334,7 @@ class GameEndpointTest() {
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(PlayerInGame(
-                player, 0, 0
+                player, INITIAL_DICE_ROLL, INITIAL_POSITION
             )),
             GameStatus.RUNNING
         )

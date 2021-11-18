@@ -9,9 +9,7 @@ import com.snakesandladders.game.persistence.GamePersistenceServiceInMemoryImpl
 import com.snakesandladders.game.persistence.PlayerPersistenceServiceInMemoryImpl
 import org.hamcrest.CoreMatchers
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.Mockito
-import org.mockito.junit.jupiter.MockitoExtension
 import org.mockito.kotlin.any
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
@@ -36,6 +34,13 @@ class MovesAreDeterminedByDiceRolls {
     @MockBean
     lateinit var gamePersistenceServiceInMemoryImpl: GamePersistenceServiceInMemoryImpl
 
+    companion object {
+        const val INITIAL_DICE_ROLL = 0
+        const val INITIAL_POSITION = 0
+        const val DICE_ROLL_RESULT = 4
+        const val UPDATED_POSITION = 4
+    }
+
 //    Given the game is started
 //    When the player rolls a die
 //    Then the result should be between 1-6 inclusive
@@ -44,14 +49,14 @@ class MovesAreDeterminedByDiceRolls {
     fun `Given the game is started When the player rolls a dice Then the result should be between 1-6 inclusive`() {
         val player = Player(
             UUID.randomUUID(),
-            "Player",
+            NAME,
             mutableSetOf()
         )
 
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(PlayerInGame(
-                player, 0, 0
+                player, INITIAL_DICE_ROLL, INITIAL_POSITION
             )),
             GameStatus.RUNNING
         )
@@ -92,7 +97,7 @@ class MovesAreDeterminedByDiceRolls {
             UUID.randomUUID(),
             mutableSetOf(
                 PlayerInGame(
-                player, 4, 0
+                player, DICE_ROLL_RESULT, INITIAL_POSITION
             )
             ),
             GameStatus.RUNNING
@@ -102,7 +107,7 @@ class MovesAreDeterminedByDiceRolls {
             game.id,
             mutableSetOf(
                 PlayerInGame(
-                player, 4 ,4
+                player, DICE_ROLL_RESULT, UPDATED_POSITION
             )
             ),
             GameStatus.RUNNING
@@ -126,8 +131,8 @@ class MovesAreDeterminedByDiceRolls {
                                 "name": "${player.name}",
                                 "games": []
                                 },
-                                "lastDice": 4,
-                                "position": 4
+                                "lastDice": $DICE_ROLL_RESULT,
+                                "position": $UPDATED_POSITION
                             }],
                         "status": "${game.status}",
                         "winner": null

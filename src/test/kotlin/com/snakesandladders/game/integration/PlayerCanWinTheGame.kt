@@ -1,7 +1,6 @@
 package com.snakesandladders.game.integration
 
 import com.snakesandladders.game.TestConstants.NAME
-import com.snakesandladders.game.models.DefaultPlayer.DEFAULT_PLAYER
 import com.snakesandladders.game.models.Game
 import com.snakesandladders.game.models.GameStatus
 import com.snakesandladders.game.models.Player
@@ -17,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.put
 import java.util.UUID
 
@@ -33,6 +31,13 @@ class PlayerCanWinTheGame {
 
     @MockBean
     lateinit var gamePersistenceServiceInMemoryImpl: GamePersistenceServiceInMemoryImpl
+
+    companion object {
+        const val DICE_ROLL_RESULT = 3
+        const val OVERDRAFT_ROLL_RESULT = 4
+        const val START_POSITION = 97
+        const val FINAL_POSITION = 100
+    }
 
 //    Given the token is on square 97
 //    When the token is moved 3 spaces
@@ -51,7 +56,7 @@ class PlayerCanWinTheGame {
             UUID.randomUUID(),
             mutableSetOf(
                 PlayerInGame(
-                    player, 3, 97
+                    player, DICE_ROLL_RESULT, START_POSITION
                 )
             ),
             GameStatus.RUNNING
@@ -61,7 +66,7 @@ class PlayerCanWinTheGame {
             game.id,
             mutableSetOf(
                 PlayerInGame(
-                    player, 3 ,100
+                    player, DICE_ROLL_RESULT , FINAL_POSITION
                 )
             ),
             GameStatus.FINISHED,
@@ -86,8 +91,8 @@ class PlayerCanWinTheGame {
                                 "name": "${player.name}",
                                 "games": []
                                 },
-                                "lastDice": 3,
-                                "position": 100
+                                "lastDice": $DICE_ROLL_RESULT,
+                                "position": $FINAL_POSITION
                             }],
                         "status": "${updateGame.status}",
                         "winner": {
@@ -109,7 +114,7 @@ class PlayerCanWinTheGame {
     fun `Given the token is on square 97 When the token is moved 4 spaces Then the token is on square 97 And the player has not won the game`() {
         val player = Player(
             UUID.randomUUID(),
-            "Player",
+            NAME,
             mutableSetOf()
         )
 
@@ -117,7 +122,7 @@ class PlayerCanWinTheGame {
             UUID.randomUUID(),
             mutableSetOf(
                 PlayerInGame(
-                    player, 4, 97
+                    player, OVERDRAFT_ROLL_RESULT, START_POSITION
                 )
             ),
             GameStatus.RUNNING
@@ -127,7 +132,7 @@ class PlayerCanWinTheGame {
             game.id,
             mutableSetOf(
                 PlayerInGame(
-                    player, 4 ,97
+                    player, OVERDRAFT_ROLL_RESULT , START_POSITION
                 )
             ),
             GameStatus.RUNNING
@@ -151,8 +156,8 @@ class PlayerCanWinTheGame {
                                 "name": "${player.name}",
                                 "games": []
                                 },
-                                "lastDice": 4,
-                                "position": 97
+                                "lastDice": $OVERDRAFT_ROLL_RESULT,
+                                "position": $START_POSITION
                             }],
                         "status": "${updateGame.status}",
                         "winner": null

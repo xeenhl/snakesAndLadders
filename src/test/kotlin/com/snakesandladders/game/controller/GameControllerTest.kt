@@ -5,8 +5,8 @@ import com.snakesandladders.game.models.*
 import com.snakesandladders.game.services.DiceService
 import com.snakesandladders.game.services.GameService
 import com.snakesandladders.game.services.PlayerService
-
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
@@ -19,7 +19,6 @@ import java.util.UUID
 @ExtendWith(MockitoExtension::class)
 internal class GameControllerTest {
 
-
     @Mock
     lateinit var gameService: GameService
     @Mock
@@ -29,6 +28,13 @@ internal class GameControllerTest {
 
     @InjectMocks
     lateinit var gameController: GameController
+
+    companion object {
+        const val INITIAL_DICE_ROLL = 0
+        const val INITIAL_POSITION = 0
+        const val DICE_ROLL_RESULT = 2
+        const val UPDATED_POSITION = 2
+    }
 
     @Test
     fun shouldCreateNewGame() {
@@ -64,7 +70,7 @@ internal class GameControllerTest {
 
         `when`(gameService.getGameById(gameId)).thenReturn(game)
         `when`(playerService.getPlayerById(playerId)).thenReturn(player)
-        game.players.add(PlayerInGame(player, 0, 0))
+        game.players.add(PlayerInGame(player, INITIAL_DICE_ROLL, INITIAL_POSITION))
         `when`(gameService.addPlayerToGame(player, game)).thenReturn(game)
 
         val updatedGame = gameController.addPlayerToGame(playerId.toString(), gameId.toString())
@@ -78,16 +84,16 @@ internal class GameControllerTest {
         val gameId = UUID.randomUUID()
         val playerId = UUID.randomUUID()
         val player = Player(playerId, NAME, mutableSetOf())
-        val game = Game(gameId, mutableSetOf(PlayerInGame(player, 0, 0)), GameStatus.RUNNING)
+        val game = Game(gameId, mutableSetOf(PlayerInGame(player, INITIAL_DICE_ROLL, INITIAL_POSITION)), GameStatus.RUNNING)
 
         `when`(gameService.getGameById(gameId)).thenReturn(game)
         `when`(playerService.getPlayerById(playerId)).thenReturn(player)
-        `when`(diceService.roll()).thenReturn(2)
+        `when`(diceService.roll()).thenReturn(DICE_ROLL_RESULT)
 
         val result = gameController.diceRollForPlayer(playerId.toString(), gameId.toString())
 
         assertEquals(playerId, result.body?.playerId)
-        assertEquals(2, result.body?.result)
+        assertEquals(DICE_ROLL_RESULT, result.body?.result)
     }
 
     @Test
@@ -96,14 +102,14 @@ internal class GameControllerTest {
         val gameId = UUID.randomUUID()
         val playerId = UUID.randomUUID()
         val player = Player(playerId, NAME, mutableSetOf())
-        val game = Game(gameId, mutableSetOf(PlayerInGame(player, 2, 0)), GameStatus.RUNNING)
-        val updatedGame = Game(gameId, mutableSetOf(PlayerInGame(player, 2, 2)), GameStatus.RUNNING)
+        val game = Game(gameId, mutableSetOf(PlayerInGame(player, DICE_ROLL_RESULT, INITIAL_POSITION)), GameStatus.RUNNING)
+        val updatedGame = Game(gameId, mutableSetOf(PlayerInGame(player, DICE_ROLL_RESULT, UPDATED_POSITION)), GameStatus.RUNNING)
 
         `when`(gameService.getGameById(gameId)).thenReturn(game)
         `when`(gameService.updateGame(any())).thenReturn(updatedGame)
 
-        val result = gameController.movePlayerInGame(playerId.toString(), gameId.toString(), 2)
+        val result = gameController.movePlayerInGame(playerId.toString(), gameId.toString(), UPDATED_POSITION)
 
-        assertEquals(result.body?.players?.first { it.player == player }?.position, 2)
+        assertEquals(result.body?.players?.first { it.player == player }?.position, UPDATED_POSITION)
     }
 }

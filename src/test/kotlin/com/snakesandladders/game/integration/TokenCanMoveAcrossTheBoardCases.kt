@@ -9,14 +9,12 @@ import com.snakesandladders.game.persistence.GamePersistenceServiceInMemoryImpl
 import com.snakesandladders.game.persistence.PlayerPersistenceServiceInMemoryImpl
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
-import org.mockito.kotlin.any
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.get
 import org.springframework.test.web.servlet.put
 import java.util.UUID
 
@@ -33,6 +31,15 @@ class TokenCanMoveAcrossTheBoardCases {
 
     @MockBean
     lateinit var gamePersistenceServiceInMemoryImpl: GamePersistenceServiceInMemoryImpl
+
+    companion object {
+        const val INITIAL_DICE_ROLL = 0
+        const val PLAYER_START_POSITION = 1
+        const val DICE_ROLL_RESULT = 3
+        const val SECOND_DICE_ROLL_RESULT = 4
+        const val UPDATED_POSITION = 4
+        const val FINISH_POSITION = 8
+    }
 
 //    Given the game is started
 //    When the token is placed on the board
@@ -56,7 +63,7 @@ class TokenCanMoveAcrossTheBoardCases {
             game.id,
             mutableSetOf(
                 PlayerInGame(
-                player, 0 ,1
+                player, INITIAL_DICE_ROLL , PLAYER_START_POSITION
             )
             ),
             GameStatus.RUNNING
@@ -80,8 +87,8 @@ class TokenCanMoveAcrossTheBoardCases {
                                 "name": "${player.name}",
                                 "games": []
                                 },
-                                "lastDice": 0,
-                                "position": 1
+                                "lastDice": $INITIAL_DICE_ROLL,
+                                "position": $PLAYER_START_POSITION
                             }],
                         "status": "${game.status}",
                         "winner": null
@@ -107,7 +114,7 @@ class TokenCanMoveAcrossTheBoardCases {
             UUID.randomUUID(),
             mutableSetOf(
                 PlayerInGame(
-                    player, 3 ,1
+                    player, DICE_ROLL_RESULT , PLAYER_START_POSITION
                 )
             ),
             GameStatus.RUNNING
@@ -117,7 +124,7 @@ class TokenCanMoveAcrossTheBoardCases {
             game.id,
             mutableSetOf(
                 PlayerInGame(
-                    player, 3 ,4
+                    player, DICE_ROLL_RESULT , UPDATED_POSITION
                 )
             ),
             GameStatus.RUNNING
@@ -141,8 +148,8 @@ class TokenCanMoveAcrossTheBoardCases {
                                 "name": "${player.name}",
                                 "games": []
                                 },
-                                "lastDice": 3,
-                                "position": 4
+                                "lastDice": $DICE_ROLL_RESULT,
+                                "position": $UPDATED_POSITION
                             }],
                         "status": "${game.status}",
                         "winner": null
@@ -169,7 +176,7 @@ class TokenCanMoveAcrossTheBoardCases {
             UUID.randomUUID(),
             mutableSetOf(
                 PlayerInGame(
-                    player, 3 ,1
+                    player, DICE_ROLL_RESULT , PLAYER_START_POSITION
                 )
             ),
             GameStatus.RUNNING
@@ -179,7 +186,7 @@ class TokenCanMoveAcrossTheBoardCases {
             game.id,
             mutableSetOf(
                 PlayerInGame(
-                    player, 3 ,4
+                    player, DICE_ROLL_RESULT, UPDATED_POSITION
                 )
             ),
             GameStatus.RUNNING
@@ -189,7 +196,7 @@ class TokenCanMoveAcrossTheBoardCases {
             game.id,
             mutableSetOf(
                 PlayerInGame(
-                    player, 4 ,4
+                    player, SECOND_DICE_ROLL_RESULT, UPDATED_POSITION
                 )
             ),
             GameStatus.RUNNING
@@ -199,7 +206,7 @@ class TokenCanMoveAcrossTheBoardCases {
             game.id,
             mutableSetOf(
                 PlayerInGame(
-                    player, 4 ,8
+                    player, SECOND_DICE_ROLL_RESULT, FINISH_POSITION
                 )
             ),
             GameStatus.RUNNING
@@ -225,8 +232,8 @@ class TokenCanMoveAcrossTheBoardCases {
                                     "name": "${player.name}",
                                     "games": []
                                     },
-                                    "lastDice": 4,
-                                    "position": 8
+                                    "lastDice": $SECOND_DICE_ROLL_RESULT,
+                                    "position": $FINISH_POSITION
                                 }],
                             "status": "${game.status}",
                             "winner": null

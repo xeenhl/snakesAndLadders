@@ -1,11 +1,12 @@
 package com.snakesandladders.game.controller
 
 import com.snakesandladders.game.TestConstants.NAME
-import com.snakesandladders.game.models.*
+import com.snakesandladders.game.models.NewPlayerDTO
+import com.snakesandladders.game.models.Player
+import com.snakesandladders.game.models.toPlayerDTO
 import com.snakesandladders.game.services.PlayerService
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock

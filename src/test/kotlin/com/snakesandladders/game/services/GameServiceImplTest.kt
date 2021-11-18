@@ -6,9 +6,8 @@ import com.snakesandladders.game.models.GameStatus
 import com.snakesandladders.game.models.Player
 import com.snakesandladders.game.models.PlayerInGame
 import com.snakesandladders.game.persistence.GamePersistenceService
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
 import org.mockito.Mock
@@ -25,6 +24,13 @@ internal class GameServiceImplTest {
 
     @InjectMocks
     lateinit var gameServiceImpl: GameServiceImpl
+
+    companion object {
+        const val INITIAL_DICE_ROLL = 0
+        const val INITIAL_POSITION = 0
+        const val DICE_ROLL_RESULT = 4
+        const val UPDATED_POSITION = 0
+    }
 
 
     @Test
@@ -55,7 +61,7 @@ internal class GameServiceImplTest {
         val gameId = UUID.randomUUID()
         val player = Player(UUID.randomUUID(), NAME, mutableSetOf())
         val savedGame = Game(gameId, mutableSetOf(), GameStatus.RUNNING)
-        val updatedGame = Game(gameId, mutableSetOf(PlayerInGame(player, 0, 0)), GameStatus.RUNNING)
+        val updatedGame = Game(gameId, mutableSetOf(PlayerInGame(player, INITIAL_DICE_ROLL, INITIAL_POSITION)), GameStatus.RUNNING)
         `when`(gamePersistenceService.updateGame(any())).thenReturn(updatedGame)
 
         val game = gameServiceImpl.addPlayerToGame(player, savedGame)
@@ -66,7 +72,7 @@ internal class GameServiceImplTest {
     @Test
     fun updateGame() {
         val player = Player(UUID.randomUUID(), NAME, mutableSetOf())
-        val updatedGame = Game(UUID.randomUUID(), mutableSetOf(PlayerInGame(player, 4, 0)), GameStatus.RUNNING)
+        val updatedGame = Game(UUID.randomUUID(), mutableSetOf(PlayerInGame(player, DICE_ROLL_RESULT, INITIAL_POSITION)), GameStatus.RUNNING)
         `when`(gamePersistenceService.updateGame(updatedGame)).thenReturn(updatedGame)
 
         val game = gameServiceImpl.updateGame(updatedGame)
@@ -77,20 +83,20 @@ internal class GameServiceImplTest {
     @Test
     fun evalStep() {
         val player = Player(UUID.randomUUID(), NAME, mutableSetOf())
-        val game = Game(UUID.randomUUID(), mutableSetOf(PlayerInGame(player, 4, 0)), GameStatus.RUNNING)
+        val game = Game(UUID.randomUUID(), mutableSetOf(PlayerInGame(player, DICE_ROLL_RESULT, INITIAL_POSITION)), GameStatus.RUNNING)
 
-        gameServiceImpl.evalStep(game, player.id, 4)
+        gameServiceImpl.evalStep(game, player.id, DICE_ROLL_RESULT)
 
-        assertEquals(game.players.elementAt(0).position, 4)
+        assertEquals(game.players.elementAt(0).position, DICE_ROLL_RESULT)
     }
 
     @Test
     fun updatePlayerDiceRoll() {
         val player = Player(UUID.randomUUID(), NAME, mutableSetOf())
-        val game = Game(UUID.randomUUID(), mutableSetOf(PlayerInGame(player, 0, 0)), GameStatus.RUNNING)
+        val game = Game(UUID.randomUUID(), mutableSetOf(PlayerInGame(player, INITIAL_DICE_ROLL, INITIAL_POSITION)), GameStatus.RUNNING)
 
-        gameServiceImpl.updatePlayerDiceRoll(game, player, 4)
+        gameServiceImpl.updatePlayerDiceRoll(game, player, DICE_ROLL_RESULT)
 
-        assertEquals(game.players.elementAt(0).lastDice, 4)
+        assertEquals(game.players.elementAt(0).lastDice, DICE_ROLL_RESULT)
     }
 }

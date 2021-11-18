@@ -2,7 +2,6 @@ package com.snakesandladders.game.integration
 
 import com.snakesandladders.game.TestConstants.NAME
 import com.snakesandladders.game.models.Player
-import com.snakesandladders.game.persistence.GamePersistenceServiceInMemoryImpl
 import com.snakesandladders.game.persistence.PlayerPersistenceServiceInMemoryImpl
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
