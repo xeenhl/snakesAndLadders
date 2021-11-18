@@ -29,10 +29,9 @@ internal class PlayerServiceImplTest {
     fun shouldCreateUser() {
 
         val newPlayer = Player(UUID.randomUUID(), NAME, mutableSetOf())
+        val player = playerServiceImpl.createUser(NAME)
 
         `when`(playerPersistenceService.savePlayer(any())).thenReturn(newPlayer)
-
-        val player = playerServiceImpl.createUser(NAME)
 
         assertEquals(player, newPlayer)
 

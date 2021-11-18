@@ -42,8 +42,7 @@ class TokenCanMoveAcrossTheBoardCases {
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val player = Player(
@@ -59,8 +58,7 @@ class TokenCanMoveAcrossTheBoardCases {
                 player, 0 ,1
             )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
@@ -111,8 +109,7 @@ class TokenCanMoveAcrossTheBoardCases {
                     player, 3 ,1
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val updateGame = Game(
@@ -122,8 +119,7 @@ class TokenCanMoveAcrossTheBoardCases {
                     player, 3 ,4
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
@@ -175,8 +171,7 @@ class TokenCanMoveAcrossTheBoardCases {
                     player, 3 ,1
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val updateGameFirst = Game(
@@ -186,8 +181,7 @@ class TokenCanMoveAcrossTheBoardCases {
                     player, 3 ,4
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val updateGameFirstAfterDice = Game(
@@ -197,8 +191,7 @@ class TokenCanMoveAcrossTheBoardCases {
                     player, 4 ,4
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val updateGameSecond = Game(
@@ -208,8 +201,7 @@ class TokenCanMoveAcrossTheBoardCases {
                     player, 4 ,8
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game, updateGameFirstAfterDice)

@@ -7,14 +7,13 @@ import com.snakesandladders.game.services.GameService
 import com.snakesandladders.game.services.PlayerService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.util.*
+import java.util.UUID
 
 @RestController
 @RequestMapping("game")
 class GameController(private val gameService: GameService,
                      private val userService: PlayerService,
                      private val diceService: DiceService) {
-
 
     @PostMapping(path = ["/create/new"], produces = ["application/json"] )
     fun createNewGame(): ResponseEntity<Game> {

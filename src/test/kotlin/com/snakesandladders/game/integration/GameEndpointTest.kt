@@ -41,8 +41,6 @@ class GameEndpointTest() {
     @MockBean
     lateinit var gamePersistenceServiceInMemoryImpl: GamePersistenceServiceInMemoryImpl
 
-    private val NAME = "Name"
-
 
     @Test
     fun `should create new game`() {
@@ -50,8 +48,7 @@ class GameEndpointTest() {
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         `when`(gamePersistenceServiceInMemoryImpl.saveGame(any())).thenReturn(game)
@@ -76,8 +73,7 @@ class GameEndpointTest() {
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         `when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
@@ -120,8 +116,7 @@ class GameEndpointTest() {
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val player = Player(
@@ -133,10 +128,9 @@ class GameEndpointTest() {
         val updateGame = Game(
             game.id,
             mutableSetOf(PlayerInGame(
-                player, 0 ,0
+                player, ZERO ,ZERO
             )),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         `when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
@@ -173,8 +167,7 @@ class GameEndpointTest() {
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val userid = UUID.randomUUID()
@@ -200,7 +193,7 @@ class GameEndpointTest() {
 
         val player = Player(
             UUID.randomUUID(),
-            NAME,
+            Companion.NAME,
             mutableSetOf()
         )
 
@@ -223,17 +216,16 @@ class GameEndpointTest() {
 
         val player = Player(
             UUID.randomUUID(),
-            NAME,
+            Companion.NAME,
             mutableSetOf()
         )
 
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(PlayerInGame(
-                player, 3, 0
+                player, 3, ZERO
             )),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val updateGame = Game(
@@ -241,8 +233,7 @@ class GameEndpointTest() {
             mutableSetOf(PlayerInGame(
                 player, 3 ,3
             )),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         `when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
@@ -279,8 +270,7 @@ class GameEndpointTest() {
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val playerId = UUID.randomUUID()
@@ -305,13 +295,12 @@ class GameEndpointTest() {
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val player = Player(
             UUID.randomUUID(),
-            NAME,
+            Companion.NAME,
             mutableSetOf()
         )
 
@@ -335,17 +324,16 @@ class GameEndpointTest() {
 
         val player = Player(
             UUID.randomUUID(),
-            NAME,
+            Companion.NAME,
             mutableSetOf()
         )
 
         val game = Game(
             UUID.randomUUID(),
             mutableSetOf(PlayerInGame(
-                player, 0, 0
+                player, ZERO, ZERO
             )),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         `when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
@@ -364,5 +352,10 @@ class GameEndpointTest() {
                 equalTo(5),
                 equalTo(6)
             )) }
+    }
+
+    companion object {
+        private const val NAME = "Name"
+        private const val ZERO = 0
     }
 }

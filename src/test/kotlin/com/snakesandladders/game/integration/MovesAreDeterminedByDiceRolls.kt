@@ -52,8 +52,7 @@ class MovesAreDeterminedByDiceRolls {
             mutableSetOf(PlayerInGame(
                 player, 0, 0
             )),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)
@@ -95,8 +94,7 @@ class MovesAreDeterminedByDiceRolls {
                 player, 4, 0
             )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val updateGame = Game(
@@ -106,8 +104,7 @@ class MovesAreDeterminedByDiceRolls {
                 player, 4 ,4
             )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)

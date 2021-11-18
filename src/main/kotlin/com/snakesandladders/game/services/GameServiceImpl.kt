@@ -8,7 +8,7 @@ import com.snakesandladders.game.models.Player
 import com.snakesandladders.game.models.PlayerInGame
 import com.snakesandladders.game.persistence.GamePersistenceService
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.UUID
 
 @Service
 class GameServiceImpl(private val gamePersistenceService: GamePersistenceService) : GameService {
@@ -17,8 +17,7 @@ class GameServiceImpl(private val gamePersistenceService: GamePersistenceService
         val newGame = Game(
             UUID.randomUUID(),
             mutableSetOf(),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
         return gamePersistenceService.saveGame(newGame)
     }
@@ -28,13 +27,7 @@ class GameServiceImpl(private val gamePersistenceService: GamePersistenceService
     }
 
     override fun addPlayerToGame(player: Player, game: Game): Game {
-        game.players.add(
-            PlayerInGame(
-                player,
-                0,
-                1
-            )
-        )
+        game.players.add(PlayerInGame(player, 0, 1))
         return gamePersistenceService.updateGame(game)
     }
 
@@ -43,9 +36,8 @@ class GameServiceImpl(private val gamePersistenceService: GamePersistenceService
     }
 
     override fun validateWinner(game: Game) {
-        val player = game.players.firstOrNull { it.position >= 100 }
-        if(player != null) {
-            game.winner = player.player
+        game.players.firstOrNull { it.position >= 100 }?.let {
+            game.winner = it.player
             game.status = GameStatus.FINISHED
         }
     }

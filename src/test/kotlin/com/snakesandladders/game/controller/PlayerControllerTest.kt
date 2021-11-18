@@ -21,28 +21,30 @@ internal class PlayerControllerTest {
     @InjectMocks
     lateinit var playerController: PlayerController
 
-    private val NAME = "name"
-
     @Test
     fun shouldCreateNewPlayer() {
-        val player = Player(UUID.randomUUID(), NAME, mutableSetOf())
+        val player = Player(UUID.randomUUID(), Companion.NAME, mutableSetOf())
 
-        Mockito.`when`(playerService.createUser(NAME)).thenReturn(player)
+        Mockito.`when`(playerService.createUser(Companion.NAME)).thenReturn(player)
 
-        val newPlayer = playerController.createNewPlayer(NewPlayerDTO(NAME));
+        val newPlayer = playerController.createNewPlayer(NewPlayerDTO(Companion.NAME));
 
-        assertEquals(newPlayer.body?.name, NAME)
+        assertEquals(newPlayer.body?.name, Companion.NAME)
     }
 
     @Test
     fun shouldGetPlayerById() {
         val playerId = UUID.randomUUID()
-        val player = Player(playerId, NAME, mutableSetOf())
+        val player = Player(playerId, Companion.NAME, mutableSetOf())
 
         Mockito.`when`(playerService.getPlayerById(playerId)).thenReturn(player)
 
         val newPlayer = playerController.getPlayerById(playerId.toString());
 
         assertEquals(newPlayer.body, player.toPlayerDTO())
+    }
+
+    companion object {
+        const val NAME = "name"
     }
 }

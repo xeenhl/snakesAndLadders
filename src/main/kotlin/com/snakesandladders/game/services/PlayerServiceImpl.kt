@@ -4,7 +4,7 @@ import com.snakesandladders.game.exception.PlayerNotFoundException
 import com.snakesandladders.game.models.Player
 import com.snakesandladders.game.persistence.PlayerPersistenceService
 import org.springframework.stereotype.Service
-import java.util.*
+import java.util.UUID
 
 @Service
 class PlayerServiceImpl(private val playerPersistenceService: PlayerPersistenceService) : PlayerService {

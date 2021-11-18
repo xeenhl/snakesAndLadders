@@ -52,8 +52,7 @@ class PlayerCanWinTheGame {
                     player, 3, 97
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val updateGame = Game(
@@ -90,9 +89,9 @@ class PlayerCanWinTheGame {
                             }],
                         "status": "${updateGame.status}",
                         "winner": {
-                            id: "${updateGame.winner?.id}",
-                            name: "${updateGame.winner?.name}",
-                            games: ${updateGame.winner?.games}
+                            id: "${updateGame.winner.id}",
+                            name: "${updateGame.winner.name}",
+                            games: ${updateGame.winner.games}
                         }
                     }
                 """)}
@@ -119,8 +118,7 @@ class PlayerCanWinTheGame {
                     player, 4, 97
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         val updateGame = Game(
@@ -130,8 +128,7 @@ class PlayerCanWinTheGame {
                     player, 4 ,97
                 )
             ),
-            GameStatus.RUNNING,
-            null
+            GameStatus.RUNNING
         )
 
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game)

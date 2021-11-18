@@ -29,7 +29,7 @@ internal class GameServiceImplTest {
 
     @Test
     fun shouldInitializeNewGame() {
-        val savedGame = Game(UUID.randomUUID(), mutableSetOf(), GameStatus.RUNNING, null)
+        val savedGame = Game(UUID.randomUUID(), mutableSetOf(), GameStatus.RUNNING)
         `when`(gamePersistenceService.saveGame(any())).thenReturn(savedGame)
 
         val game = gameServiceImpl.initializeNewGame()
@@ -42,7 +42,7 @@ internal class GameServiceImplTest {
     @Test
     fun getGameById() {
         val gameId = UUID.randomUUID()
-        val savedGame = Game(gameId, mutableSetOf(), GameStatus.RUNNING, null)
+        val savedGame = Game(gameId, mutableSetOf(), GameStatus.RUNNING)
         `when`(gamePersistenceService.findGameById(gameId)).thenReturn(savedGame)
 
         val game = gameServiceImpl.getGameById(gameId)
@@ -54,8 +54,8 @@ internal class GameServiceImplTest {
     fun addPlayerToGame() {
         val gameId = UUID.randomUUID()
         val player = Player(UUID.randomUUID(), NAME, mutableSetOf())
-        val savedGame = Game(gameId, mutableSetOf(), GameStatus.RUNNING, null)
-        val updatedGame = Game(gameId, mutableSetOf(PlayerInGame(player, 0, 0)), GameStatus.RUNNING, null)
+        val savedGame = Game(gameId, mutableSetOf(), GameStatus.RUNNING)
+        val updatedGame = Game(gameId, mutableSetOf(PlayerInGame(player, 0, 0)), GameStatus.RUNNING)
         `when`(gamePersistenceService.updateGame(any())).thenReturn(updatedGame)
 
         val game = gameServiceImpl.addPlayerToGame(player, savedGame)
@@ -66,7 +66,7 @@ internal class GameServiceImplTest {
     @Test
     fun updateGame() {
         val player = Player(UUID.randomUUID(), NAME, mutableSetOf())
-        val updatedGame = Game(UUID.randomUUID(), mutableSetOf(PlayerInGame(player, 4, 0)), GameStatus.RUNNING, null)
+        val updatedGame = Game(UUID.randomUUID(), mutableSetOf(PlayerInGame(player, 4, 0)), GameStatus.RUNNING)
         `when`(gamePersistenceService.updateGame(updatedGame)).thenReturn(updatedGame)
 
         val game = gameServiceImpl.updateGame(updatedGame)
@@ -77,9 +77,7 @@ internal class GameServiceImplTest {
     @Test
     fun evalStep() {
         val player = Player(UUID.randomUUID(), NAME, mutableSetOf())
-        val game = Game(UUID.randomUUID(), mutableSetOf(PlayerInGame(player, 4, 0)), GameStatus.RUNNING, null)
-        val evaluatedGame = Game(game.id, mutableSetOf(PlayerInGame(player, 4, 4)), GameStatus.RUNNING, null)
-//        `when`(gamePersistenceService.updateGame(updatedGame)).thenReturn(updatedGame)
+        val game = Game(UUID.randomUUID(), mutableSetOf(PlayerInGame(player, 4, 0)), GameStatus.RUNNING)
 
         gameServiceImpl.evalStep(game, player.id, 4)
 
@@ -89,7 +87,7 @@ internal class GameServiceImplTest {
     @Test
     fun updatePlayerDiceRoll() {
         val player = Player(UUID.randomUUID(), NAME, mutableSetOf())
-        val game = Game(UUID.randomUUID(), mutableSetOf(PlayerInGame(player, 0, 0)), GameStatus.RUNNING, null)
+        val game = Game(UUID.randomUUID(), mutableSetOf(PlayerInGame(player, 0, 0)), GameStatus.RUNNING)
 
         gameServiceImpl.updatePlayerDiceRoll(game, player, 4)
 

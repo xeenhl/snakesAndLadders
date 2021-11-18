@@ -6,7 +6,7 @@ import com.snakesandladders.game.models.toPlayerDTO
 import com.snakesandladders.game.services.PlayerService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.util.*
+import java.util.UUID
 
 @RestController
 @RequestMapping("player")
