@@ -6,15 +6,15 @@ Snakes and ladders is turn based game Rest API
 
 following endpoint are provided to api consumer:
 
-1) GET: /game/create/new
+1) POST: /game/create/new
     - creates and save a game in RUNNING status without any players
 2) GET: /game/{gameId}
     - returns game by id, or 404 if no game found
-3) GET: /game/{gameId}/add/player/{playerId}
+3) PUT: /game/{gameId}/add/player/{playerId}
     - add existing player by id to the game
 4) GET: /game/{gameId}/player/{playerId}/dice/roll
     - roll a dice for player in game
-5) GET: /game/{gameId}/player/{playerId}/move/{steps}
+5) PUT: /game/{gameId}/player/{playerId}/move/{steps}
     - move player to provided steps that match last dice roll result
 6) POST: /player
     - add new player to the system.
