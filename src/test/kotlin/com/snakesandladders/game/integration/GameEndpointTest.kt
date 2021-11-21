@@ -27,7 +27,7 @@ import java.util.UUID
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class GameEndpointTest() {
+class GameEndpointTest {
 
     @Autowired
     private lateinit var mockMvc: MockMvc
@@ -60,14 +60,19 @@ class GameEndpointTest() {
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                content { json(""" 
+                content {
+                    json(
+                        """ 
                     {
                         "id": "${game.id}",
                         "players": [],
                         "status": "${game.status}",
                         "winner": null
                     }
-                """)}}
+                """
+                    )
+                }
+            }
     }
 
     @Test
@@ -85,14 +90,18 @@ class GameEndpointTest() {
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                content { json("""
+                content {
+                    json(
+                        """
                     {
                         "id": "${game.id}",
                         "players": [],
                         "status": "${game.status}",
                         "winner": null 
                     }
-                """)}
+                """
+                    )
+                }
             }
     }
 
@@ -105,11 +114,15 @@ class GameEndpointTest() {
             .andExpect {
                 status { isNotFound() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                content { json("""
+                content {
+                    json(
+                        """
                     {
                         "error": "Game with id [${id}] not found"
                     }
-                """)}
+                """
+                    )
+                }
             }
     }
 
@@ -130,9 +143,11 @@ class GameEndpointTest() {
 
         val updateGame = Game(
             game.id,
-            mutableSetOf(PlayerInGame(
-                player, INITIAL_DICE_ROLL, INITIAL_POSITION
-            )),
+            mutableSetOf(
+                PlayerInGame(
+                    player, INITIAL_DICE_ROLL, INITIAL_POSITION
+                )
+            ),
             GameStatus.RUNNING
         )
 
@@ -144,7 +159,9 @@ class GameEndpointTest() {
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                content { json("""
+                content {
+                    json(
+                        """
                     {
                         "id": "${game.id}",
                         "players": [
@@ -160,7 +177,9 @@ class GameEndpointTest() {
                         "status": "${game.status}",
                         "winner": null
                     }
-                """)}
+                """
+                    )
+                }
             }
     }
 
@@ -181,11 +200,15 @@ class GameEndpointTest() {
             .andExpect {
                 status { isNotFound() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                content { json("""
+                content {
+                    json(
+                        """
                     {
                         "error": "User with id [$userid] not found"
                     }
-                """)}
+                """
+                    )
+                }
             }
     }
 
@@ -206,11 +229,15 @@ class GameEndpointTest() {
             .andExpect {
                 status { isNotFound() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                content { json("""
+                content {
+                    json(
+                        """
                     {
                         "error": "Game with id [${gameid}] not found"
                     }
-                """)}
+                """
+                    )
+                }
             }
     }
 
@@ -225,17 +252,21 @@ class GameEndpointTest() {
 
         val game = Game(
             UUID.randomUUID(),
-            mutableSetOf(PlayerInGame(
-                player, DICE_ROLL_RESULT, INITIAL_POSITION
-            )),
+            mutableSetOf(
+                PlayerInGame(
+                    player, DICE_ROLL_RESULT, INITIAL_POSITION
+                )
+            ),
             GameStatus.RUNNING
         )
 
         val updateGame = Game(
             game.id,
-            mutableSetOf(PlayerInGame(
-                player, DICE_ROLL_RESULT, UPDATED_POSITION
-            )),
+            mutableSetOf(
+                PlayerInGame(
+                    player, DICE_ROLL_RESULT, UPDATED_POSITION
+                )
+            ),
             GameStatus.RUNNING
         )
 
@@ -247,7 +278,9 @@ class GameEndpointTest() {
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                content { json("""
+                content {
+                    json(
+                        """
                     {
                         "id": "${game.id}",
                         "players": [
@@ -263,7 +296,9 @@ class GameEndpointTest() {
                         "status": "${game.status}",
                         "winner": null
                     }
-                """)}
+                """
+                    )
+                }
             }
     }
 
@@ -284,11 +319,15 @@ class GameEndpointTest() {
             .andExpect {
                 status { isNotFound() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                content { json("""
+                content {
+                    json(
+                        """
                     {
                         "error": "Can't get player with id [$playerId]"
                     }
-                """)}
+                """
+                    )
+                }
             }
     }
 
@@ -314,11 +353,15 @@ class GameEndpointTest() {
             .andExpect {
                 status { isNotFound() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                content { json("""
+                content {
+                    json(
+                        """
                     {
                         "error": "Can't get player with id [${player.id}]"
                     }
-                """)}
+                """
+                    )
+                }
             }
     }
 
@@ -333,9 +376,11 @@ class GameEndpointTest() {
 
         val game = Game(
             UUID.randomUUID(),
-            mutableSetOf(PlayerInGame(
-                player, INITIAL_DICE_ROLL, INITIAL_POSITION
-            )),
+            mutableSetOf(
+                PlayerInGame(
+                    player, INITIAL_DICE_ROLL, INITIAL_POSITION
+                )
+            ),
             GameStatus.RUNNING
         )
 
@@ -347,13 +392,17 @@ class GameEndpointTest() {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
             }
-            .andExpect { jsonPath("$.result", anyOf(
-                equalTo(1),
-                equalTo(2),
-                equalTo(3),
-                equalTo(4),
-                equalTo(5),
-                equalTo(6)
-            )) }
+            .andExpect {
+                jsonPath(
+                    "$.result", anyOf(
+                        equalTo(1),
+                        equalTo(2),
+                        equalTo(3),
+                        equalTo(4),
+                        equalTo(5),
+                        equalTo(6)
+                    )
+                )
+            }
     }
 }

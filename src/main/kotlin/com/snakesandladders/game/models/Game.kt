@@ -7,7 +7,12 @@ enum class GameStatus {
     RUNNING, FINISHED
 }
 
-data class Game(val id: UUID, val players: MutableSet<PlayerInGame>, var status: GameStatus, var winner: Player = DEFAULT_PLAYER)
+data class Game(
+    val id: UUID,
+    val players: MutableSet<PlayerInGame>,
+    var status: GameStatus,
+    var winner: Player = DEFAULT_PLAYER
+)
 
 data class GameDTO(val id: UUID, val players: MutableSet<PlayerInGame>, var status: GameStatus, var winner: Player?)
 

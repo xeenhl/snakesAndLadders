@@ -55,9 +55,11 @@ class MovesAreDeterminedByDiceRolls {
 
         val game = Game(
             UUID.randomUUID(),
-            mutableSetOf(PlayerInGame(
-                player, INITIAL_DICE_ROLL, INITIAL_POSITION
-            )),
+            mutableSetOf(
+                PlayerInGame(
+                    player, INITIAL_DICE_ROLL, INITIAL_POSITION
+                )
+            ),
             GameStatus.RUNNING
         )
 
@@ -69,15 +71,18 @@ class MovesAreDeterminedByDiceRolls {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
             }
-            .andExpect { jsonPath("$.result", CoreMatchers.anyOf(
-                CoreMatchers.equalTo(1),
-                CoreMatchers.equalTo(2),
-                CoreMatchers.equalTo(3),
-                CoreMatchers.equalTo(4),
-                CoreMatchers.equalTo(5),
-                CoreMatchers.equalTo(6)
-            )
-            ) }
+            .andExpect {
+                jsonPath(
+                    "$.result", CoreMatchers.anyOf(
+                        CoreMatchers.equalTo(1),
+                        CoreMatchers.equalTo(2),
+                        CoreMatchers.equalTo(3),
+                        CoreMatchers.equalTo(4),
+                        CoreMatchers.equalTo(5),
+                        CoreMatchers.equalTo(6)
+                    )
+                )
+            }
     }
 
 //    Given the player rolls a 4
@@ -97,8 +102,8 @@ class MovesAreDeterminedByDiceRolls {
             UUID.randomUUID(),
             mutableSetOf(
                 PlayerInGame(
-                player, DICE_ROLL_RESULT, INITIAL_POSITION
-            )
+                    player, DICE_ROLL_RESULT, INITIAL_POSITION
+                )
             ),
             GameStatus.RUNNING
         )
@@ -107,8 +112,8 @@ class MovesAreDeterminedByDiceRolls {
             game.id,
             mutableSetOf(
                 PlayerInGame(
-                player, DICE_ROLL_RESULT, UPDATED_POSITION
-            )
+                    player, DICE_ROLL_RESULT, UPDATED_POSITION
+                )
             ),
             GameStatus.RUNNING
         )
@@ -121,7 +126,9 @@ class MovesAreDeterminedByDiceRolls {
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                content { json("""
+                content {
+                    json(
+                        """
                     {
                         "id": "${game.id}",
                         "players": [
@@ -137,7 +144,9 @@ class MovesAreDeterminedByDiceRolls {
                         "status": "${game.status}",
                         "winner": null
                     }
-                """)}
+                """
+                    )
+                }
             }
     }
 }

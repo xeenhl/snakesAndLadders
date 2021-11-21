@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 class ExceptionHandler {
 
     @ExceptionHandler(value = [GameNotFoundException::class, PlayerNotFoundException::class])
-    fun errorHandler(exception: Exception) : ResponseEntity<ErrorDTO> = ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+    fun errorHandler(exception: Exception): ResponseEntity<ErrorDTO> = ResponseEntity.status(HttpStatus.NOT_FOUND).body(
         ErrorDTO(exception.message ?: "")
     )
 

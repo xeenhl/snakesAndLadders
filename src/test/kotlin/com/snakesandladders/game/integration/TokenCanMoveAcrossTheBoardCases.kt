@@ -63,8 +63,8 @@ class TokenCanMoveAcrossTheBoardCases {
             game.id,
             mutableSetOf(
                 PlayerInGame(
-                player, INITIAL_DICE_ROLL , PLAYER_START_POSITION
-            )
+                    player, INITIAL_DICE_ROLL, PLAYER_START_POSITION
+                )
             ),
             GameStatus.RUNNING
         )
@@ -77,7 +77,9 @@ class TokenCanMoveAcrossTheBoardCases {
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                content { json("""
+                content {
+                    json(
+                        """
                     {
                         "id": "${game.id}",
                         "players": [
@@ -93,7 +95,9 @@ class TokenCanMoveAcrossTheBoardCases {
                         "status": "${game.status}",
                         "winner": null
                     }
-                """)}
+                """
+                    )
+                }
             }
     }
 
@@ -114,7 +118,7 @@ class TokenCanMoveAcrossTheBoardCases {
             UUID.randomUUID(),
             mutableSetOf(
                 PlayerInGame(
-                    player, DICE_ROLL_RESULT , PLAYER_START_POSITION
+                    player, DICE_ROLL_RESULT, PLAYER_START_POSITION
                 )
             ),
             GameStatus.RUNNING
@@ -124,7 +128,7 @@ class TokenCanMoveAcrossTheBoardCases {
             game.id,
             mutableSetOf(
                 PlayerInGame(
-                    player, DICE_ROLL_RESULT , UPDATED_POSITION
+                    player, DICE_ROLL_RESULT, UPDATED_POSITION
                 )
             ),
             GameStatus.RUNNING
@@ -138,7 +142,9 @@ class TokenCanMoveAcrossTheBoardCases {
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                content { json("""
+                content {
+                    json(
+                        """
                     {
                         "id": "${game.id}",
                         "players": [
@@ -154,7 +160,9 @@ class TokenCanMoveAcrossTheBoardCases {
                         "status": "${game.status}",
                         "winner": null
                     }
-                """)}
+                """
+                    )
+                }
             }
     }
 
@@ -176,7 +184,7 @@ class TokenCanMoveAcrossTheBoardCases {
             UUID.randomUUID(),
             mutableSetOf(
                 PlayerInGame(
-                    player, DICE_ROLL_RESULT , PLAYER_START_POSITION
+                    player, DICE_ROLL_RESULT, PLAYER_START_POSITION
                 )
             ),
             GameStatus.RUNNING
@@ -212,7 +220,8 @@ class TokenCanMoveAcrossTheBoardCases {
             GameStatus.RUNNING
         )
 
-        Mockito.`when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id)).thenReturn(game, updateGameFirstAfterDice)
+        Mockito.`when`(gamePersistenceServiceInMemoryImpl.findGameById(game.id))
+            .thenReturn(game, updateGameFirstAfterDice)
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.updateGame(updateGameFirst)).thenReturn(updateGameFirst)
         Mockito.`when`(gamePersistenceServiceInMemoryImpl.updateGame(updateGameSecond)).thenReturn(updateGameSecond)
         Mockito.`when`(playerPersistenceServiceInMemoryImpl.findPlayerById(player.id)).thenReturn(player)
@@ -222,7 +231,9 @@ class TokenCanMoveAcrossTheBoardCases {
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                content { json("""
+                content {
+                    json(
+                        """
                         {
                             "id": "${game.id}",
                             "players": [
@@ -238,7 +249,9 @@ class TokenCanMoveAcrossTheBoardCases {
                             "status": "${game.status}",
                             "winner": null
                         }
-                    """)}
+                    """
+                    )
+                }
             }
     }
 

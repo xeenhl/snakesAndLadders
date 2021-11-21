@@ -21,8 +21,10 @@ internal class GameControllerTest {
 
     @Mock
     lateinit var gameService: GameService
+
     @Mock
     lateinit var playerService: PlayerService
+
     @Mock
     lateinit var diceService: DiceService
 
@@ -84,7 +86,8 @@ internal class GameControllerTest {
         val gameId = UUID.randomUUID()
         val playerId = UUID.randomUUID()
         val player = Player(playerId, NAME, mutableSetOf())
-        val game = Game(gameId, mutableSetOf(PlayerInGame(player, INITIAL_DICE_ROLL, INITIAL_POSITION)), GameStatus.RUNNING)
+        val game =
+            Game(gameId, mutableSetOf(PlayerInGame(player, INITIAL_DICE_ROLL, INITIAL_POSITION)), GameStatus.RUNNING)
 
         `when`(gameService.getGameById(gameId)).thenReturn(game)
         `when`(playerService.getPlayerById(playerId)).thenReturn(player)
@@ -102,8 +105,10 @@ internal class GameControllerTest {
         val gameId = UUID.randomUUID()
         val playerId = UUID.randomUUID()
         val player = Player(playerId, NAME, mutableSetOf())
-        val game = Game(gameId, mutableSetOf(PlayerInGame(player, DICE_ROLL_RESULT, INITIAL_POSITION)), GameStatus.RUNNING)
-        val updatedGame = Game(gameId, mutableSetOf(PlayerInGame(player, DICE_ROLL_RESULT, UPDATED_POSITION)), GameStatus.RUNNING)
+        val game =
+            Game(gameId, mutableSetOf(PlayerInGame(player, DICE_ROLL_RESULT, INITIAL_POSITION)), GameStatus.RUNNING)
+        val updatedGame =
+            Game(gameId, mutableSetOf(PlayerInGame(player, DICE_ROLL_RESULT, UPDATED_POSITION)), GameStatus.RUNNING)
 
         `when`(gameService.getGameById(gameId)).thenReturn(game)
         `when`(gameService.updateGame(any())).thenReturn(updatedGame)

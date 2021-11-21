@@ -66,7 +66,7 @@ class PlayerCanWinTheGame {
             game.id,
             mutableSetOf(
                 PlayerInGame(
-                    player, DICE_ROLL_RESULT , FINAL_POSITION
+                    player, DICE_ROLL_RESULT, FINAL_POSITION
                 )
             ),
             GameStatus.FINISHED,
@@ -81,7 +81,9 @@ class PlayerCanWinTheGame {
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                content { json("""
+                content {
+                    json(
+                        """
                     {
                         "id": "${updateGame.id}",
                         "players": [
@@ -101,7 +103,9 @@ class PlayerCanWinTheGame {
                             games: ${updateGame.winner.games}
                         }
                     }
-                """)}
+                """
+                    )
+                }
             }
     }
 
@@ -132,7 +136,7 @@ class PlayerCanWinTheGame {
             game.id,
             mutableSetOf(
                 PlayerInGame(
-                    player, OVERDRAFT_ROLL_RESULT , START_POSITION
+                    player, OVERDRAFT_ROLL_RESULT, START_POSITION
                 )
             ),
             GameStatus.RUNNING
@@ -146,7 +150,9 @@ class PlayerCanWinTheGame {
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                content { json("""
+                content {
+                    json(
+                        """
                     {
                         "id": "${updateGame.id}",
                         "players": [
@@ -163,8 +169,10 @@ class PlayerCanWinTheGame {
                         "winner": null
                         }
                     }
-                """)}
+                """
+                    )
+                }
             }
-   }
+    }
 
 }

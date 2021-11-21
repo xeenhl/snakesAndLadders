@@ -29,7 +29,7 @@ internal class PlayerControllerTest {
 
         Mockito.`when`(playerService.createUser(NAME)).thenReturn(player)
 
-        val newPlayer = playerController.createNewPlayer(NewPlayerDTO(NAME));
+        val newPlayer = playerController.createNewPlayer(NewPlayerDTO(NAME))
 
         assertEquals(newPlayer.body?.name, NAME)
     }
@@ -41,7 +41,7 @@ internal class PlayerControllerTest {
 
         Mockito.`when`(playerService.getPlayerById(playerId)).thenReturn(player)
 
-        val newPlayer = playerController.getPlayerById(playerId.toString());
+        val newPlayer = playerController.getPlayerById(playerId.toString())
 
         assertEquals(newPlayer.body, player.toPlayerDTO())
     }

@@ -12,22 +12,16 @@ import java.util.UUID
 @RequestMapping("player")
 class PlayerController(private val playerService: PlayerService) {
 
-
     @PostMapping("/new")
     fun createNewPlayer(@RequestBody player: NewPlayerDTO): ResponseEntity<PlayerDTO> {
-
         val newPlayer = playerService.createUser(player.name)
         return ResponseEntity.ok(newPlayer.toPlayerDTO())
-
     }
 
     @GetMapping("/{playerId}")
     fun getPlayerById(@PathVariable(required = true) playerId: String): ResponseEntity<PlayerDTO> {
-
-        val player =  playerService.getPlayerById(UUID.fromString(playerId))
+        val player = playerService.getPlayerById(UUID.fromString(playerId))
         return ResponseEntity.ok(player.toPlayerDTO())
-
     }
-
 
 }

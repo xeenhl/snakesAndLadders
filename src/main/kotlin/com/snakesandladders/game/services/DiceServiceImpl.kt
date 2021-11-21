@@ -4,8 +4,10 @@ import org.springframework.stereotype.Service
 import kotlin.random.Random
 
 @Service
-class DiceServiceImpl : DiceService {
+class DiceServiceImpl: DiceService {
+
     override fun roll(): Int {
         return Random.nextInt(1, 7)
     }
+
 }

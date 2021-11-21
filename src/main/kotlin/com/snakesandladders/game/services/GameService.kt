@@ -5,6 +5,7 @@ import com.snakesandladders.game.models.Player
 import java.util.UUID
 
 interface GameService {
+
     fun initializeNewGame(): Game
     fun getGameById(gameId: UUID): Game
     fun addPlayerToGame(player: Player, game: Game): Game

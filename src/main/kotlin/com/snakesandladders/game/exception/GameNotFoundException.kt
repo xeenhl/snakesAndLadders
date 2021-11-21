@@ -1,4 +1,3 @@
 package com.snakesandladders.game.exception
 
-class GameNotFoundException(message: String) : RuntimeException(message) {
-}
+class GameNotFoundException(message: String): RuntimeException(message)

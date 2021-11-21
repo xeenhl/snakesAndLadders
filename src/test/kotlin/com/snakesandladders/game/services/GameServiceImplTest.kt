@@ -61,7 +61,8 @@ internal class GameServiceImplTest {
         val gameId = UUID.randomUUID()
         val player = Player(UUID.randomUUID(), NAME, mutableSetOf())
         val savedGame = Game(gameId, mutableSetOf(), GameStatus.RUNNING)
-        val updatedGame = Game(gameId, mutableSetOf(PlayerInGame(player, INITIAL_DICE_ROLL, INITIAL_POSITION)), GameStatus.RUNNING)
+        val updatedGame =
+            Game(gameId, mutableSetOf(PlayerInGame(player, INITIAL_DICE_ROLL, INITIAL_POSITION)), GameStatus.RUNNING)
         `when`(gamePersistenceService.updateGame(any())).thenReturn(updatedGame)
 
         val game = gameServiceImpl.addPlayerToGame(player, savedGame)
@@ -72,7 +73,11 @@ internal class GameServiceImplTest {
     @Test
     fun updateGame() {
         val player = Player(UUID.randomUUID(), NAME, mutableSetOf())
-        val updatedGame = Game(UUID.randomUUID(), mutableSetOf(PlayerInGame(player, DICE_ROLL_RESULT, INITIAL_POSITION)), GameStatus.RUNNING)
+        val updatedGame = Game(
+            UUID.randomUUID(),
+            mutableSetOf(PlayerInGame(player, DICE_ROLL_RESULT, INITIAL_POSITION)),
+            GameStatus.RUNNING
+        )
         `when`(gamePersistenceService.updateGame(updatedGame)).thenReturn(updatedGame)
 
         val game = gameServiceImpl.updateGame(updatedGame)
@@ -83,7 +88,11 @@ internal class GameServiceImplTest {
     @Test
     fun evalStep() {
         val player = Player(UUID.randomUUID(), NAME, mutableSetOf())
-        val game = Game(UUID.randomUUID(), mutableSetOf(PlayerInGame(player, DICE_ROLL_RESULT, INITIAL_POSITION)), GameStatus.RUNNING)
+        val game = Game(
+            UUID.randomUUID(),
+            mutableSetOf(PlayerInGame(player, DICE_ROLL_RESULT, INITIAL_POSITION)),
+            GameStatus.RUNNING
+        )
 
         gameServiceImpl.evalStep(game, player.id, DICE_ROLL_RESULT)
 
@@ -93,7 +102,11 @@ internal class GameServiceImplTest {
     @Test
     fun updatePlayerDiceRoll() {
         val player = Player(UUID.randomUUID(), NAME, mutableSetOf())
-        val game = Game(UUID.randomUUID(), mutableSetOf(PlayerInGame(player, INITIAL_DICE_ROLL, INITIAL_POSITION)), GameStatus.RUNNING)
+        val game = Game(
+            UUID.randomUUID(),
+            mutableSetOf(PlayerInGame(player, INITIAL_DICE_ROLL, INITIAL_POSITION)),
+            GameStatus.RUNNING
+        )
 
         gameServiceImpl.updatePlayerDiceRoll(game, player, DICE_ROLL_RESULT)
 

@@ -39,20 +39,24 @@ class PlayerEndpointTest {
 
         mockMvc.post("/player/new") {
             contentType = MediaType.APPLICATION_JSON
-            content  = """
+            content = """
                         { "name": "$NAME" }
                     """
         }.andExpect {
-                status { isOk() }
-                content { contentType(MediaType.APPLICATION_JSON) }
-                content { json("""
+            status { isOk() }
+            content { contentType(MediaType.APPLICATION_JSON) }
+            content {
+                json(
+                    """
                     {
                         "id": "${player.id}",
                         "name": "$NAME",
                         "games": [],
                         "wins": 0
                     }
-                """)}
+                """
+                )
+            }
         }
     }
 
@@ -71,14 +75,18 @@ class PlayerEndpointTest {
             .andExpect {
                 status { isOk() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                content { json("""
+                content {
+                    json(
+                        """
                     {
                         "id": "${player.id}",
                         "name": "$NAME",
                         "games": [],
                         "wins": 0
                     }
-                    """)}
+                    """
+                    )
+                }
             }
     }
 
@@ -91,11 +99,15 @@ class PlayerEndpointTest {
             .andExpect {
                 status { isNotFound() }
                 content { contentType(MediaType.APPLICATION_JSON) }
-                content { json("""
+                content {
+                    json(
+                        """
                     {
                         "error": "User with id [${id}] not found"
                     } 
-                    """)}
+                    """
+                    )
+                }
             }
     }
 

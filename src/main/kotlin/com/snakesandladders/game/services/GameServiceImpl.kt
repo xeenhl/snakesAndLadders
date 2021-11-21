@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 import java.util.UUID
 
 @Service
-class GameServiceImpl(private val gamePersistenceService: GamePersistenceService) : GameService {
+class GameServiceImpl(private val gamePersistenceService: GamePersistenceService): GameService {
 
     override fun initializeNewGame(): Game {
         val newGame = Game(
@@ -23,7 +23,8 @@ class GameServiceImpl(private val gamePersistenceService: GamePersistenceService
     }
 
     override fun getGameById(gameId: UUID): Game {
-        return gamePersistenceService.findGameById(gameId) ?: throw GameNotFoundException("Game with id [$gameId] not found")
+        return gamePersistenceService.findGameById(gameId)
+            ?: throw GameNotFoundException("Game with id [$gameId] not found")
     }
 
     override fun addPlayerToGame(player: Player, game: Game): Game {
@@ -50,12 +51,14 @@ class GameServiceImpl(private val gamePersistenceService: GamePersistenceService
     }
 
     override fun evalStep(game: Game, playerId: UUID?, steps: Int) {
-        val player = game.players.firstOrNull { it.player.id == playerId } ?: throw PlayerNotFoundException("Can't get player with id [${playerId}]")
+        val player = game.players.firstOrNull { it.player.id == playerId }
+            ?: throw PlayerNotFoundException("Can't get player with id [${playerId}]")
         if(steps == player.lastDice) player.position += steps else throw IllegalArgumentException(" Steps must be same as las dice result: ${player.lastDice}")
         if(player.position > 100) player.position -= steps
     }
 
     override fun updatePlayerDiceRoll(game: Game, player: Player, rollResult: Int) {
-        game.players.firstOrNull() { it.player == player }?.lastDice = rollResult
+        game.players.firstOrNull { it.player == player }?.lastDice = rollResult
     }
+
 }
